@@ -169,6 +169,10 @@ nav{
   font-size:14px;font-weight:700;color:var(--paper);
   background:var(--furrow);border-radius:100px;
   padding:8px 18px;margin:0 auto 18px;width:fit-content;
+  max-width:100%;white-space:nowrap;
+}
+@media(max-width:360px){
+  .hero-release{font-size:12.5px;padding:7px 13px;gap:6px;}
 }
 .hero-release .dot2{width:6px;height:6px;border-radius:50%;background:var(--tomato);flex:0 0 auto;}
 .hero h1{
@@ -198,8 +202,12 @@ nav{
 .pc-demo-label{
   font-size:13px;font-weight:700;color:var(--furrow);
   display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:11px;
+  text-align:center;
 }
 .pc-demo-label .dot{width:7px;height:7px;border-radius:50%;background:var(--tomato);flex:0 0 auto;}
+@media(max-width:360px){
+  .pc-demo-label{font-size:12px;gap:5px;}
+}
 .pc-row{display:flex;gap:9px;align-items:stretch;}
 .pc-input-shell{
   flex:1;display:flex;align-items:center;gap:8px;
@@ -544,7 +552,7 @@ footer a:hover{color:var(--paper);}
 
     <div class="hero-copy">
       <span class="hero-badge">栽培記録アプリ GLOONA（グローナ）｜家庭菜園・市民農園むけ</span>
-      <div class="hero-release"><span class="dot2"></span>2026年10月、スマホアプリとしてリリース予定</div>
+      <div class="hero-release"><span class="dot2"></span>2026年10月、リリース予定</div>
       <h1>畑の記録に、<br><span class="hl">その土地の天気</span>を。</h1>
       <p class="hero-sub">
         郵便番号を入れるだけ。記録をつけたその日の天気が、写真とメモと一緒に残ります。
@@ -553,7 +561,7 @@ footer a:hover{color:var(--paper);}
 
       <!-- ── 署名要素：郵便番号デモ ── -->
       <div class="pc-demo">
-        <div class="pc-demo-label"><span class="dot"></span>畑の郵便番号を入れると、エリアまで自動で入ります</div>
+        <div class="pc-demo-label"><span class="dot"></span>畑の郵便番号で、エリアを自動入力</div>
         <div class="pc-row">
           <label class="pc-input-shell" for="zipInput">
             <span class="pc-mark" aria-hidden="true">〒</span>
