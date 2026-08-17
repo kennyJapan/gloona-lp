@@ -486,6 +486,19 @@ footer a:hover{color:var(--paper);}
   display:none;
 }
 .sticky-cta .btn-line{width:100%;}
+
+/* ストアバッジ（承認後に有効化） */
+.store-badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.store-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  background:#1b2a1d;color:#fffdf7;text-decoration:none;
+  border-radius:8px;padding:9px 18px 9px 14px;
+  transition:transform .16s,background .16s;
+}
+.store-badge:hover{background:#000;transform:translateY(-2px);}
+.store-badge .sb-text{text-align:left;line-height:1.25;}
+.store-badge .sb-small{font-size:10px;opacity:.75;display:block;}
+.store-badge .sb-big{font-size:15px;font-weight:700;display:block;}
 @media(max-width:759px){
   .sticky-cta{display:block;}
   body{padding-bottom:78px;}
@@ -545,7 +558,7 @@ footer a:hover{color:var(--paper);}
       </div>
 
       <div class="hero-cta">
-        <a href="#register" class="btn btn-line">LINEで先行登録する（無料）</a>
+        <a href="#register" class="btn btn-line" id="heroCta">LINEで先行登録する（無料）</a>
         <p class="hero-cta-note">
           スマホアプリは<b>2026年10月リリース予定</b>。<br>
           先行登録された方は、Plusを3ヶ月無料でお使いいただけます。
@@ -828,7 +841,22 @@ footer a:hover{color:var(--paper);}
     </p>
 
     <!-- ▼ 差し替え：LINE Official Account Manager で発行した友だち追加URL -->
-    <a href="https://lin.ee/XXXXXXX" class="btn btn-line">LINEで先行登録する</a>
+    <a href="https://lin.ee/oi0lb7Z" class="btn btn-line" id="finalCta">LINEで先行登録する</a>
+
+    <!-- ストア承認後の切り替え手順:
+         1) 上の <a id="finalCta"> のブロックをまるごと削除（または非表示に）
+         2) 下のコメントを外して有効化
+         3) href を実際のストアURLに差し替え
+         4) final-perks の文言も「3ヶ月無料/登録10秒」から実態に合わせて変更
+    <div class="store-badges">
+      <a href="https://apps.apple.com/app/idXXXXXXXXXX" class="store-badge">
+        <span class="sb-text"><span class="sb-small">Download on the</span><span class="sb-big">App Store</span></span>
+      </a>
+      <a href="https://play.google.com/store/apps/details?id=XXXXXXXXXX" class="store-badge">
+        <span class="sb-text"><span class="sb-small">GET IT ON</span><span class="sb-big">Google Play</span></span>
+      </a>
+    </div>
+    -->
 
     <div class="final-perks">
       <span class="perk">Plus 3ヶ月無料</span>
@@ -855,7 +883,7 @@ footer a:hover{color:var(--paper);}
 
 <!-- モバイル固定CTA -->
 <div class="sticky-cta">
-  <a href="#register" class="btn btn-line">LINEで先行登録する（無料）</a>
+  <a href="#register" class="btn btn-line" id="heroCta">LINEで先行登録する（無料）</a>
 </div>
 
 <script>
@@ -905,7 +933,7 @@ footer a:hover{color:var(--paper);}
      空のままなら通信せず、都道府県までで止まります（それでもLPは成立します）。
      ※ zipcloud等の外部APIはCORS非対応でブラウザから直接は叩けません。 */
   var ZIP_ENDPOINT = '';
-  var LINE_URL     = 'https://lin.ee/XXXXXXX';   /* ← 友だち追加URLに差し替え */
+  var LINE_URL     = 'https://lin.ee/oi0lb7Z';   /* ← 友だち追加URLに差し替え */
 
   var shown = '';        /* 現在描画中の状態キー。同じなら描き直さない */
   var reqId = 0;         /* 遅れて返ってきたレスポンスを捨てるための連番 */
