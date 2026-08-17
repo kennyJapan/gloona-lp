@@ -3,714 +3,1055 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GLOONA — すべての植物そだてびとへ</title>
+<title>GLOONA — 畑の記録に、その土地の天気を。家庭菜園・市民農園の栽培日誌アプリ</title>
+<meta name="description" content="郵便番号を入れるだけで、あなたの畑があるエリアの気象データが毎日の栽培記録に自動でひもづく。家庭菜園・市民農園・小規模農家のための栽培日誌アプリ GLOONA。">
+<meta property="og:title" content="GLOONA — 畑の記録に、その土地の天気を。">
+<meta property="og:description" content="郵便番号を入れるだけ。あなたの畑のエリアの天気が、栽培記録に自動でひもづく栽培日誌アプリ。">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Serif+Display:ital@0;1&family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:image" content="https://gloona.app/ogp-gloona.png"> <!-- 本番ドメイン確定後に要差し替え -->
+<meta name="twitter:card" content="summary_large_image">
 <style>
+/* ============================================================
+   GLOONA LP — 作物特化版
+   Palette : 種袋のクラフト紙 / 黒ボク土 / 畝の深緑 / 完熟トマトの朱
+   Type    : Zen Kaku Gothic New (見出し) / Noto Sans JP (本文) / Roboto Mono (数値)
+   ============================================================ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
 :root{
-  --green:#3a7d44;
-  --green-light:#e8f5eb;
-  --green-mid:#5a9e68;
-  --green-dark:#27500a;
-  --green-pale:#f2faf3;
-  --soil:#8B6F47;
-  --soil-light:#f7f2e9;
-  --pop-yellow:#f7c948;
-  --pop-orange:#f08c3a;
-  --pop-pink:#e86fa3;
-  --pop-lavender:#a78bfa;
-  --text:#1a2a1c;
-  --text-muted:#5a6b5c;
-  --white:#ffffff;
-  --off-white:#fafdf8;
-  --border:#d0e4d3;
-}
-html{scroll-behavior:smooth;}
-body{font-family:'Noto Sans JP','Hiragino Kaku Gothic ProN','Hiragino Sans',YuGothic,'Yu Gothic',Meiryo,sans-serif;color:var(--text);background:var(--off-white);line-height:1.7;font-size:16px;overflow-x:hidden;}
+  /* 畑の色 */
+  --furrow:#2b5d34;        /* 畝の深緑 — 主色 */
+  --furrow-dark:#1e4325;
+  --sprout:#6ba368;        /* 若芽 */
+  --sprout-pale:#e4efe1;
+  --soil:#6b4f34;          /* 黒ボク土 */
+  --soil-pale:#e9dfcd;
 
-/* NAV */
+  /* 紙 */
+  --kraft:#f2ebdd;         /* 種袋のクラフト紙 */
+  --kraft-deep:#e7dcc7;
+  --paper:#fffdf7;
+
+  /* アクセント */
+  --tomato:#c2412d;        /* 完熟トマトの朱 — CTAと強調のみ */
+  --tomato-dark:#a3341f;
+  --sky:#3d7a94;           /* 気象データ */
+  --sky-pale:#e2eef2;
+
+  /* 文字 */
+  --ink:#1b2a1d;
+  --ink-mid:#4e5f50;
+  --ink-soft:#7b8a7d;
+  --rule:#d5cab3;
+
+  --shadow-sm:0 1px 2px rgba(27,42,29,.06);
+  --shadow-md:0 4px 18px rgba(27,42,29,.09);
+  --shadow-lg:0 14px 44px rgba(27,42,29,.14);
+}
+
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{
+  font-family:'Noto Sans JP','Hiragino Kaku Gothic ProN',YuGothic,'Yu Gothic',Meiryo,sans-serif;
+  font-size:17px;               /* ターゲット層が40〜70代。ここは絶対に下げない */
+  line-height:1.85;
+  color:var(--ink);
+  background:var(--kraft);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+h1,h2,h3,.display{
+  font-family:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;
+  font-weight:900;
+  line-height:1.35;
+  letter-spacing:.01em;
+}
+.mono{font-family:'Roboto Mono',ui-monospace,monospace;font-feature-settings:'tnum';}
+
+a{color:inherit;}
+:focus-visible{outline:3px solid var(--tomato);outline-offset:3px;border-radius:4px;}
+
+.wrap{max-width:1020px;margin:0 auto;padding:0 24px;}
+.narrow{max-width:760px;margin:0 auto;padding:0 24px;}
+
+/* 見出しの共通装飾：畝の線 */
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;
+  font-size:13px;font-weight:700;letter-spacing:.1em;
+  color:var(--furrow);
+  padding-bottom:8px;margin-bottom:16px;
+  border-bottom:2px solid var(--sprout);
+}
+.h2{font-size:clamp(1.6rem,4.4vw,2.35rem);color:var(--furrow-dark);margin-bottom:12px;}
+.lede{font-size:clamp(1rem,2.3vw,1.08rem);color:var(--ink-mid);max-width:44em;}
+
+/* ============ NAV ============ */
 nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 2rem;height:64px;
-  background:rgba(250,253,248,0.93);backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  min-height:62px;padding:9px 20px;
+  background:rgba(242,235,221,.94);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--rule);
 }
-.logo-mark{display:flex;align-items:center;gap:10px;text-decoration:none;}
-.logo-text{font-family:'DM Serif Display',Georgia,serif;font-size:22px;color:var(--green);letter-spacing:0.02em;}
-.nav-cta{
-  background:var(--green);color:var(--white);
-  padding:8px 22px;border-radius:100px;
-  text-decoration:none;font-size:14px;font-weight:700;
-  transition:background 0.2s;
+.brand{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;}
+.brand-logo{height:30px;width:auto;display:block;}
+.brand-reading{
+  font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;
+  font-size:10.5px;color:var(--furrow);letter-spacing:.1em;
+  white-space:nowrap;
 }
-.nav-cta:hover{background:var(--green-dark);}
+.brand-tag{font-size:11px;color:var(--ink-soft);letter-spacing:.04em;display:none;}
+@media(min-width:760px){.brand-tag{display:block;}}
 
-/* HERO — グリーン基調 */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;
+  text-decoration:none;border:none;cursor:pointer;
+  border-radius:8px;transition:transform .16s,background .16s,box-shadow .16s;
+}
+.btn-line{
+  background:#06C755;color:#fff;
+  padding:15px 28px;font-size:1.02rem;
+  box-shadow:0 4px 0 #04a144;
+}
+.btn-line:hover{background:#05b34c;transform:translateY(-2px);box-shadow:0 6px 0 #04a144;}
+.btn-line:active{transform:translateY(2px);box-shadow:0 2px 0 #04a144;}
+.btn-line.sm{padding:9px 18px;font-size:.86rem;box-shadow:0 3px 0 #04a144;}
+.btn-ghost{
+  background:transparent;color:var(--furrow);
+  border:2px solid var(--furrow);padding:13px 26px;font-size:.95rem;
+}
+.btn-ghost:hover{background:var(--furrow);color:var(--paper);}
+
+/* ============ HERO ============ */
 .hero{
-  min-height:100vh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:120px 2rem 80px;
   position:relative;overflow:hidden;
-  background:var(--off-white);
+  padding:72px 0 84px;
+  background:
+    radial-gradient(900px 420px at 82% -10%, rgba(107,163,104,.20), transparent 62%),
+    var(--kraft);
 }
-.hero-bubbles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
-.bubble{
-  position:absolute;border-radius:50%;opacity:0.22;
-  animation:float 9s ease-in-out infinite;
+/* 畝（うね）— 背景の細い等高線 */
+.hero::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;height:150px;
+  background:repeating-linear-gradient(
+    to right,
+    transparent 0 26px,
+    rgba(107,79,52,.09) 26px 28px
+  );
+  mask-image:linear-gradient(to top,#000,transparent);
+  -webkit-mask-image:linear-gradient(to top,#000,transparent);
+  pointer-events:none;
 }
-.b1{width:380px;height:380px;background:var(--green-mid);top:-100px;left:-120px;animation-delay:0s;}
-.b2{width:240px;height:240px;background:var(--green-light);top:40px;right:-70px;animation-delay:1.8s;}
-.b3{width:160px;height:160px;background:var(--green);bottom:100px;left:6%;animation-delay:3.2s;opacity:0.12;}
-.b4{width:110px;height:110px;background:var(--green-mid);bottom:180px;right:10%;animation-delay:2.2s;opacity:0.15;}
-.b5{width:70px;height:70px;background:var(--green-dark);top:38%;left:18%;animation-delay:4.5s;opacity:0.08;}
-@keyframes float{
-  0%,100%{transform:translateY(0) scale(1);}
-  50%{transform:translateY(-16px) scale(1.03);}
+.hero-grid{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:1fr;gap:44px;align-items:center;
+  max-width:640px;margin:0 auto;
 }
-.hero-content{position:relative;z-index:1;max-width:740px;}
-.hero-eyebrow{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--white);border:1.5px solid var(--border);
-  border-radius:100px;padding:6px 18px;
-  font-size:13px;font-weight:700;color:var(--green-dark);
-  margin-bottom:1.8rem;
-  box-shadow:0 2px 12px rgba(58,125,68,0.08);
+.hero-copy{text-align:center;}
+.hero-copy .hero-sub{margin-left:auto;margin-right:auto;}
+
+.hero-badge{
+  display:inline-block;
+  font-size:12.5px;font-weight:700;letter-spacing:.06em;
+  color:var(--soil);background:var(--soil-pale);
+  border:1px solid #d8c9ac;border-radius:100px;
+  padding:5px 15px;margin-bottom:20px;
 }
 .hero h1{
-  font-family:'Zen Maru Gothic','Hiragino Kaku Gothic ProN','Hiragino Sans',YuGothic,sans-serif;
-  font-size:clamp(2.2rem,6vw,3.8rem);
-  line-height:1.25;
-  color:var(--green-dark);
-  margin-bottom:1rem;
-  font-weight:700;
+  font-size:clamp(2.05rem,6.2vw,3.25rem);
+  color:var(--furrow-dark);
+  margin-bottom:18px;
 }
-.hero h1 em{
-  font-style:normal;
-  color:var(--green);
+.hero h1 .hl{
+  position:relative;display:inline-block;color:var(--tomato);
+}
+.hero h1 .hl::after{
+  content:'';position:absolute;left:-2px;right:-2px;bottom:2px;height:9px;
+  background:rgba(194,65,45,.16);border-radius:2px;z-index:-1;
+}
+.hero-sub{font-size:1.05rem;color:var(--ink-mid);margin-bottom:30px;max-width:31em;}
+
+/* --- 署名要素：郵便番号デモ --- */
+.pc-demo{
+  background:var(--paper);
+  border:2px solid var(--furrow);
+  border-radius:12px;
+  padding:20px 20px 18px;
+  box-shadow:var(--shadow-md);
+  max-width:440px;
+  margin:0 auto;
+}
+.pc-demo-label{
+  font-size:13px;font-weight:700;color:var(--furrow);
+  display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:11px;
+}
+.pc-demo-label .dot{width:7px;height:7px;border-radius:50%;background:var(--tomato);flex:0 0 auto;}
+.pc-row{display:flex;gap:9px;align-items:stretch;}
+.pc-input-shell{
+  flex:1;display:flex;align-items:center;gap:8px;
+  border:2px solid var(--rule);border-radius:8px;
+  background:var(--kraft);padding:0 13px;
+  transition:border-color .18s,background .18s;
+}
+.pc-input-shell:focus-within{border-color:var(--sprout);background:var(--paper);}
+.pc-mark{font-size:1.15rem;color:var(--ink-soft);font-weight:700;}
+#zipInput{
+  border:none;background:transparent;outline:none;width:100%;
+  font-family:'Roboto Mono',monospace;font-size:1.2rem;font-weight:500;
+  letter-spacing:.14em;color:var(--ink);padding:13px 0;
+}
+#zipInput::placeholder{color:#b6b09f;letter-spacing:.14em;}
+.pc-cta{
+  display:flex;width:100%;margin-top:14px;
+  padding:13px 20px;font-size:.97rem;
+}
+.pc-cta-note{font-size:12px;color:var(--ink-soft);text-align:center;margin-top:8px;}
+
+/* 住所が1行ずつ埋まっていく表示 */
+.pc-fields{display:flex;flex-direction:column;gap:1px;background:var(--rule);border-radius:8px;overflow:hidden;}
+.pc-field{
+  display:grid;grid-template-columns:82px 1fr;align-items:center;gap:10px;
+  background:var(--kraft);padding:9px 13px;
+}
+.pc-field .k{font-size:11.5px;font-weight:700;color:var(--ink-soft);letter-spacing:.02em;}
+.pc-field .v{
+  font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:1rem;
+  color:var(--furrow-dark);
+}
+.pc-field.pending{background:#f6f2e8;}
+.pc-field.pending .v{color:var(--ink-soft);font-weight:400;font-size:.88rem;}
+.pc-skel{
+  display:inline-block;width:86px;height:13px;border-radius:3px;
+  background:linear-gradient(90deg,#e2dac8 25%,#efe8d8 50%,#e2dac8 75%);
+  background-size:220% 100%;animation:shim 1.15s linear infinite;vertical-align:-1px;
+}
+@keyframes shim{from{background-position:120% 0;}to{background-position:-120% 0;}}
+.pc-hint{font-size:12px;color:var(--ink-soft);text-align:center;margin-top:10px;}
+
+.pc-result{
+  margin-top:14px;padding-top:14px;
+  border-top:1px dashed var(--rule);
+  display:none;
+}
+.pc-result.on{display:block;animation:slideIn .34s ease both;}
+@keyframes slideIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:none;}}
+.pc-line{display:flex;align-items:center;gap:10px;font-size:.95rem;margin-bottom:7px;}
+.pc-line:last-child{margin-bottom:0;}
+.pc-tick{
+  width:20px;height:20px;flex:0 0 auto;border-radius:50%;
+  background:var(--sprout);color:#fff;
+  display:grid;place-items:center;font-size:11px;font-weight:700;
+}
+.pc-tick.wait{background:var(--sky);}
+.pc-pref{font-weight:700;color:var(--furrow-dark);}
+.pc-note{font-size:12.5px;color:var(--ink-soft);margin-top:11px;line-height:1.65;text-align:center;}
+
+.hero-cta{margin-top:26px;display:flex;flex-direction:column;gap:11px;align-items:center;text-align:center;}
+.hero-cta-note{font-size:13px;color:var(--ink-mid);line-height:1.7;}
+.hero-cta-note b{color:var(--tomato);font-weight:700;}
+.hero-secondary{font-size:13.5px;color:var(--ink-mid);}
+.hero-secondary a{color:var(--furrow);font-weight:700;text-underline-offset:3px;}
+
+/* --- ヒーロー右：栽培日誌カード --- */
+.logcard{
+  background:var(--paper);
+  border:1px solid var(--rule);
+  border-radius:14px;
+  box-shadow:var(--shadow-lg);
+  overflow:hidden;
+  transform:rotate(-1.1deg);
+  max-width:400px;margin:0 auto;
+}
+.logcard-head{
+  background:var(--furrow);color:var(--paper);
+  padding:13px 18px;display:flex;justify-content:space-between;align-items:baseline;
+}
+.logcard-crop{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:1.02rem;}
+.logcard-date{font-family:'Roboto Mono',monospace;font-size:.78rem;opacity:.85;}
+.logcard-photo{
+  height:132px;
+  background:
+    radial-gradient(circle at 32% 62%, #7fae63 0 22px, transparent 23px),
+    radial-gradient(circle at 62% 44%, #6b9c55 0 30px, transparent 31px),
+    radial-gradient(circle at 80% 74%, #8dbb70 0 18px, transparent 19px),
+    linear-gradient(170deg,#c9d9b4,#a8bd8c);
   position:relative;
-  display:inline-block;
 }
-.hero h1 em::after{
-  content:'';
-  position:absolute;
-  bottom:-4px;left:0;right:0;height:6px;
-  background:var(--pop-yellow);
-  border-radius:3px;
-  z-index:-1;
-  opacity:0.7;
+.logcard-stamp{
+  position:absolute;right:13px;top:13px;
+  width:72px;height:72px;border-radius:50%;
+  border:2.5px solid var(--tomato);color:var(--tomato);
+  background:rgba(255,253,247,.9);
+  display:grid;place-items:center;align-content:center;
+  transform:rotate(9deg);
+  font-family:'Roboto Mono',monospace;line-height:1.25;text-align:center;
 }
-.hero-sub{
-  font-size:clamp(1rem,2.5vw,1.15rem);
-  color:var(--text-muted);
-  margin:0 auto 2.5rem;
-  max-width:520px;
-  line-height:1.85;
+.logcard-stamp .s1{font-size:.6rem;font-weight:700;letter-spacing:.06em;}
+.logcard-stamp .s2{font-size:1.02rem;font-weight:700;}
+.logcard-stamp .s3{font-size:.56rem;}
+.logcard-body{padding:15px 18px 17px;}
+.logcard-meta{
+  display:flex;flex-wrap:wrap;gap:6px;margin-bottom:11px;
 }
-.hero-cta-wrap{display:flex;flex-direction:column;align-items:center;gap:0.8rem;}
-.hero-cta{
-  display:inline-flex;align-items:center;gap:10px;
-  background:var(--green);color:var(--white);
-  padding:17px 40px;border-radius:100px;
-  text-decoration:none;font-size:1.05rem;font-weight:700;
-  transition:all 0.25s;
-  box-shadow:0 6px 24px rgba(58,125,68,0.28);
+.chip{
+  font-size:11.5px;font-weight:700;border-radius:5px;padding:3px 9px;
+  background:var(--sprout-pale);color:var(--furrow-dark);
 }
-.hero-cta:hover{background:var(--green-dark);transform:translateY(-3px);box-shadow:0 10px 32px rgba(58,125,68,0.38);}
-.hero-cta-note{font-size:12px;color:var(--text-muted);}
+.chip.sky{background:var(--sky-pale);color:var(--sky);}
+.chip.soil{background:var(--soil-pale);color:var(--soil);}
+.logcard-text{font-size:.9rem;color:var(--ink-mid);line-height:1.75;}
+.logcard-foot{
+  border-top:1px dashed var(--rule);margin-top:13px;padding-top:11px;
+  font-size:11.5px;color:var(--ink-soft);display:flex;justify-content:space-between;
+}
+.logcard-caption{
+  text-align:center;font-size:12px;color:var(--ink-soft);margin-top:14px;line-height:1.7;
+}
+.logcard-flag{
+  position:absolute;left:0;top:0;
+  background:var(--soil);color:var(--paper);
+  font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;
+  font-size:11px;letter-spacing:.05em;padding:4px 12px;
+  border-bottom-right-radius:8px;z-index:2;
+}
+.logcard{position:relative;}
 
-/* WHO IS IT FOR — タイル */
-.who{padding:80px 2rem;background:var(--white);}
-.who-inner{max-width:960px;margin:0 auto;text-align:center;}
-.section-label{font-size:11px;font-weight:700;letter-spacing:0.14em;color:var(--green);text-transform:uppercase;margin-bottom:0.75rem;}
-.who h2{
-  font-family:'Zen Maru Gothic','Hiragino Kaku Gothic ProN','Hiragino Sans',YuGothic,sans-serif;
-  font-size:clamp(1.6rem,4vw,2.4rem);
-  color:var(--green-dark);font-weight:700;
-  margin-bottom:0.5rem;
-}
-.who-sub{color:var(--text-muted);font-size:15px;margin-bottom:2.5rem;}
-.who-tiles{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:1rem;
-}
-.who-tile{
-  border-radius:20px;padding:2rem 1.5rem;
-  display:flex;flex-direction:column;align-items:center;gap:0.75rem;
-  transition:transform 0.2s;cursor:default;
-}
-.who-tile:hover{transform:translateY(-4px);}
-.who-tile.a{background:#fff9e6;border:1.5px solid #f0d87a;}
-.who-tile.b{background:#eaf5ef;border:1.5px solid #93d4a6;}
-.who-tile.c{background:#fdf0f8;border:1.5px solid #e8a0cc;}
-.who-tile.d{background:#ede9ff;border:1.5px solid #b5a4f5;}
-.who-tile .emoji{font-size:2.4rem;}
-.who-tile .tile-title{font-weight:700;font-size:1rem;color:var(--text);}
-.who-tile .tile-desc{font-size:13px;color:var(--text-muted);line-height:1.65;}
+/* ============ セクション共通 ============ */
+section{padding:82px 0;}
+.sec-kraft{background:var(--kraft);}
+.sec-paper{background:var(--paper);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+.sec-dark{background:var(--furrow-dark);color:var(--paper);}
 
-/* PROBLEM — ナチュラル */
-.problem{padding:100px 2rem;background:var(--soil-light);}
-.problem-inner{max-width:900px;margin:0 auto;}
-.section-title-serif{
-  font-family:'DM Serif Display',serif;
-  font-size:clamp(1.8rem,4vw,2.6rem);
-  color:var(--green-dark);line-height:1.25;
-  margin-bottom:0.5rem;
+/* ============ 課題 ============ */
+.pain-quotes{margin:26px 0 34px;display:flex;flex-direction:column;gap:14px;}
+.pain-q{
+  display:flex;gap:13px;align-items:flex-start;
+  font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;
+  font-size:clamp(1.02rem,2.7vw,1.22rem);
+  color:var(--ink);line-height:1.6;
 }
-.section-title-ja{
-  font-family:'Noto Sans JP',sans-serif;
-  font-size:0.55em;font-weight:700;
-  color:var(--green);display:block;margin-top:0.2em;margin-bottom:1rem;
+.pain-q .q{
+  font-family:'Roboto Mono',monospace;color:var(--tomato);
+  font-size:1.5rem;line-height:1;flex:0 0 auto;margin-top:2px;
 }
-.problem-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:1.25rem;margin-top:2.5rem;
+.pain-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;
 }
-.problem-lead{display:flex;align-items:baseline;gap:10px;margin-bottom:0.6rem;}
-.lead-check{
-  width:22px;height:22px;border-radius:50%;
-  background:var(--green);color:var(--white);
-  display:inline-flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:700;flex-shrink:0;
+.pain-card{
+  background:var(--paper);border:1px solid var(--rule);
+  border-left:4px solid var(--soil);
+  border-radius:10px;padding:20px 19px;
 }
-.lead-text{font-size:1.05rem;font-weight:700;color:var(--text);line-height:1.5;}
-mark.marker-yellow{
-  background:linear-gradient(to bottom, transparent 50%, #f7e040 50%);
-  background-size:100% 1.6em;
-  padding:0 2px;
-  color:inherit;
-  -webkit-box-decoration-break:clone;
-  box-decoration-break:clone;
-}
-mark.marker-green{
-  background:linear-gradient(to bottom, transparent 50%, #8ee09a 50%);
-  background-size:100% 1.6em;
-  padding:0 2px;
-  color:inherit;
-  -webkit-box-decoration-break:clone;
-  box-decoration-break:clone;
-}
-.problem-card{
-  background:var(--white);border:1px solid #e0d5c0;
-  border-radius:16px;padding:1.5rem;
-}
-.problem-card .icon{font-size:2rem;margin-bottom:0.75rem;}
-.problem-card h3{font-weight:700;font-size:0.95rem;color:var(--soil);margin-bottom:0.4rem;}
-.problem-card p{font-size:13px;color:var(--text-muted);line-height:1.65;}
+.pain-card h3{font-size:.98rem;color:var(--soil);margin-bottom:6px;}
+.pain-card p{font-size:.88rem;color:var(--ink-mid);line-height:1.8;}
 
-/* FEATURES — ナチュラル農業系 */
-.features{padding:100px 2rem;background:var(--off-white);}
-.features-inner{max-width:960px;margin:0 auto;}
-.features-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:1.5rem;margin-top:2.5rem;
+/* ============ 差別化（主役） ============ */
+.why{
+  background:var(--paper);
+  background-image:
+    linear-gradient(rgba(107,163,104,.09) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(107,163,104,.09) 1px,transparent 1px);
+  background-size:26px 26px;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
 }
-.feature-card{
-  background:var(--white);border:1px solid var(--border);
-  border-radius:20px;padding:2rem 1.75rem;
-  transition:box-shadow 0.22s,transform 0.22s;
+.why-inner{background:rgba(255,253,247,.86);border-radius:16px;padding:36px 28px;}
+@media(max-width:640px){.why-inner{padding:28px 20px;}}
+.why-steps{display:flex;flex-direction:column;gap:0;margin-top:30px;}
+.why-step{
+  display:grid;grid-template-columns:52px 1fr;gap:18px;
+  padding-bottom:26px;position:relative;
 }
-.feature-card:hover{box-shadow:0 10px 36px rgba(58,125,68,0.11);transform:translateY(-3px);}
-.feature-icon{
-  width:50px;height:50px;
-  background:var(--green-light);border-radius:14px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;margin-bottom:1.2rem;
+.why-step:not(:last-child)::before{
+  content:'';position:absolute;left:25px;top:56px;bottom:2px;width:2px;
+  background:repeating-linear-gradient(to bottom,var(--sprout) 0 5px,transparent 5px 11px);
 }
-.feature-card h3{font-weight:700;font-size:1rem;margin-bottom:0.4rem;color:var(--green-dark);}
-.feature-card p{font-size:13px;color:var(--text-muted);line-height:1.72;}
+.why-num{
+  width:52px;height:52px;border-radius:10px;
+  background:var(--furrow);color:var(--paper);
+  display:grid;place-items:center;
+  font-family:'Roboto Mono',monospace;font-size:1.25rem;font-weight:700;
+}
+.why-num.sky{background:var(--sky);}
+.why-num.soon{background:var(--paper);color:var(--soil);border:2px dashed var(--soil);}
+.why-step h3{font-size:1.08rem;color:var(--furrow-dark);margin-bottom:5px;padding-top:9px;}
+.why-step p{font-size:.93rem;color:var(--ink-mid);}
+.tag-soon{
+  display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;
+  background:var(--soil-pale);color:var(--soil);
+  border-radius:4px;padding:2px 8px;margin-left:8px;vertical-align:2px;
+}
+.why-stat{
+  margin-top:8px;display:inline-flex;align-items:baseline;gap:8px;
+  background:var(--sprout-pale);border-radius:7px;padding:8px 14px;
+}
+.why-stat .n{font-family:'Roboto Mono',monospace;font-weight:700;font-size:1.35rem;color:var(--furrow-dark);}
+.why-stat .l{font-size:12.5px;color:var(--ink-mid);}
 
-/* HOW — シンプル */
-.how{padding:100px 2rem;background:#f0f7f1;}
-.how-inner{max-width:720px;margin:0 auto;}
-.steps{display:flex;flex-direction:column;gap:0;margin-top:3rem;position:relative;}
-.step{display:grid;grid-template-columns:64px 1fr;gap:1.5rem;align-items:flex-start;padding-bottom:2.5rem;position:relative;}
-.step:not(:last-child)::before{
-  content:'';position:absolute;left:31px;top:56px;bottom:0;width:2px;
-  background:repeating-linear-gradient(to bottom,var(--green) 0,var(--green) 6px,transparent 6px,transparent 12px);
-  opacity:0.25;
+/* ============ 機能 ============ */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:16px;margin-top:30px;}
+.feat{
+  background:var(--paper);border:1px solid var(--rule);border-radius:11px;
+  padding:22px 20px;transition:box-shadow .2s,transform .2s;
 }
-.step-num{
-  width:64px;height:64px;border-radius:50%;
-  background:var(--green);color:var(--white);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'DM Serif Display',serif;font-size:1.6rem;flex-shrink:0;
+.feat:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.feat-ic{
+  width:42px;height:42px;border-radius:9px;background:var(--sprout-pale);
+  display:grid;place-items:center;font-size:19px;margin-bottom:13px;
 }
-.step-body{padding-top:0.85rem;}
-.step-body h3{font-weight:700;font-size:1.05rem;color:var(--green-dark);margin-bottom:0.35rem;}
-.step-body p{font-size:14px;color:var(--text-muted);}
-.step-chip{
-  display:inline-block;font-size:11px;font-weight:700;
-  background:var(--green-light);color:var(--green-dark);
-  border-radius:100px;padding:2px 10px;margin-bottom:0.5rem;
-  letter-spacing:0.04em;
+.feat h3{font-size:.99rem;color:var(--furrow-dark);margin-bottom:5px;}
+.feat p{font-size:.88rem;color:var(--ink-mid);line-height:1.8;}
+
+/* ============ 料金 ============ */
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:18px;margin-top:30px;}
+.plan{
+  background:var(--paper);border:1.5px solid var(--rule);border-radius:13px;
+  padding:26px 24px;display:flex;flex-direction:column;position:relative;
+}
+.plan.hi{border-color:var(--furrow);border-width:2.5px;box-shadow:var(--shadow-md);}
+.plan-flag{
+  position:absolute;top:-12px;left:22px;
+  background:var(--tomato);color:#fff;font-size:11.5px;font-weight:700;
+  letter-spacing:.05em;border-radius:5px;padding:3px 12px;
+}
+.plan-name{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:1.12rem;color:var(--furrow-dark);}
+.plan-for{font-size:12.5px;color:var(--ink-soft);margin-bottom:12px;}
+.plan-price{font-family:'Roboto Mono',monospace;font-weight:700;font-size:2.1rem;color:var(--furrow);line-height:1;}
+.plan-price small{font-family:'Noto Sans JP',sans-serif;font-size:.85rem;font-weight:400;color:var(--ink-soft);}
+.plan-hr{border:none;border-top:1px dashed var(--rule);margin:16px 0;}
+.plan ul{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:20px;}
+.plan li{display:flex;gap:9px;font-size:.87rem;color:var(--ink-mid);line-height:1.7;}
+.plan li .ck{color:var(--sprout);font-weight:700;flex:0 0 auto;}
+.plan li .ck.x{color:#c4bda9;}
+.plan-btm{margin-top:auto;font-size:12.5px;color:var(--ink-soft);}
+.addon{
+  margin-top:20px;background:var(--soil-pale);border-radius:10px;padding:18px 20px;
+  display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
+}
+.addon-t{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;color:var(--soil);font-size:.98rem;}
+.addon-d{font-size:.85rem;color:var(--ink-mid);}
+.addon-p{font-family:'Roboto Mono',monospace;font-weight:700;font-size:1.3rem;color:var(--soil);white-space:nowrap;}
+
+/* ============ FAQ ============ */
+.faq{margin-top:28px;border-top:1px solid var(--rule);}
+details{border-bottom:1px solid var(--rule);}
+summary{
+  cursor:pointer;list-style:none;padding:18px 34px 18px 0;position:relative;
+  font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:1rem;
+  color:var(--furrow-dark);
+}
+summary::-webkit-details-marker{display:none;}
+summary::after{
+  content:'+';position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  font-family:'Roboto Mono',monospace;font-size:1.35rem;color:var(--sprout);
+  transition:transform .2s;
+}
+details[open] summary::after{content:'−';}
+details p{padding:0 0 18px;font-size:.92rem;color:var(--ink-mid);}
+
+/* ============ 最終CTA ============ */
+.final{text-align:center;}
+.final .eyebrow{color:#a9cfae;border-bottom-color:#4a7a52;}
+.final h2{font-size:clamp(1.75rem,5vw,2.7rem);color:var(--paper);margin-bottom:14px;}
+.final p{color:rgba(255,253,247,.72);max-width:33em;margin:0 auto 26px;font-size:1rem;}
+.final .btn-line{font-size:1.08rem;padding:17px 38px;}
+.final-perks{
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:24px;
+}
+.perk{
+  font-size:12.5px;color:#c8e0cb;
+  border:1px solid #4a7a52;border-radius:100px;padding:5px 14px;
+}
+.final-alt{margin-top:22px;font-size:13.5px;color:rgba(255,253,247,.6);}
+.final-alt a{color:#a9cfae;font-weight:700;}
+
+/* ============ FOOTER ============ */
+footer{background:var(--furrow-dark);color:rgba(255,253,247,.45);
+  border-top:1px solid rgba(255,255,255,.12);padding:34px 24px 26px;text-align:center;font-size:13px;}
+.footer-logo{height:64px;width:auto;display:inline-block;opacity:.92;filter:brightness(0) invert(1);}
+footer a{color:rgba(255,253,247,.62);text-decoration:none;margin:0 11px;}
+footer a:hover{color:var(--paper);}
+
+/* ============ モバイル固定CTA ============ */
+.sticky-cta{
+  position:fixed;left:0;right:0;bottom:0;z-index:190;
+  background:rgba(242,235,221,.97);backdrop-filter:blur(10px);
+  border-top:1px solid var(--rule);padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+  display:none;
+}
+.sticky-cta .btn-line{width:100%;}
+@media(max-width:759px){
+  .sticky-cta{display:block;}
+  body{padding-bottom:78px;}
 }
 
-/* PLANS */
-.plans{padding:100px 2rem;background:var(--green-light);}
-.plans-inner{max-width:900px;margin:0 auto;}
-.plans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:2.5rem;}
-.plan-card{
-  background:var(--white);border:1.5px solid var(--border);
-  border-radius:22px;padding:2rem;position:relative;
-  display:flex;flex-direction:column;
+/* ============ モーション ============ */
+.rise{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease;}
+.rise.in{opacity:1;transform:none;}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;}
+  .rise{opacity:1;transform:none;}
+  html{scroll-behavior:auto;}
 }
-.plan-card.featured{border-color:var(--green);box-shadow:0 10px 36px rgba(58,125,68,0.16);}
-.plan-badge{
-  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
-  background:var(--green);color:var(--white);
-  font-size:11px;font-weight:700;padding:3px 16px;
-  border-radius:100px;letter-spacing:0.06em;white-space:nowrap;
-}
-.plan-name{font-size:1.1rem;font-weight:700;color:var(--green-dark);margin-bottom:0.2rem;}
-.plan-price{
-  font-family:'DM Serif Display',serif;font-size:2.6rem;
-  color:var(--green);line-height:1;margin:0.75rem 0 0.25rem;
-}
-.plan-price span{font-family:'Noto Sans JP',sans-serif;font-size:1rem;font-weight:400;color:var(--text-muted);}
-.plan-sub{font-size:13px;color:var(--text-muted);margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border);}
-.plan-list{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:1.75rem;}
-.plan-list li{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--text-muted);}
-.plan-list li .ck{
-  width:18px;height:18px;min-width:18px;border-radius:50%;
-  background:var(--green-light);flex-shrink:0;margin-top:2px;
-  display:flex;align-items:center;justify-content:center;
-  color:var(--green);font-size:10px;font-weight:700;
-}
-.plan-btn{
-  display:block;text-align:center;padding:12px;
-  border-radius:100px;font-weight:700;font-size:14px;
-  text-decoration:none;transition:all 0.2s;
-  margin-top:auto;
-}
-.plan-btn.primary{background:var(--green);color:var(--white);}
-.plan-btn.primary:hover{background:var(--green-dark);}
-.plan-btn.outline{border:1.5px solid var(--green);color:var(--green);background:transparent;}
-.plan-btn.outline:hover{background:var(--green-light);}
 
-/* VOICES */
-.voices{padding:100px 2rem;background:var(--soil-light);}
-.voices-inner{max-width:960px;margin:0 auto;}
-.voices-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem;margin-top:2.5rem;}
-.voice-card{
-  background:var(--white);border:1px solid #e0d5c0;
-  border-radius:18px;padding:1.75rem;
-}
-.voice-stars{color:var(--pop-yellow);font-size:14px;margin-bottom:0.75rem;letter-spacing:2px;}
-.voice-text{font-size:14px;color:var(--text);line-height:1.78;margin-bottom:1.2rem;font-style:italic;}
-.voice-author{display:flex;align-items:center;gap:10px;}
-.v-avatar{
-  width:36px;height:36px;border-radius:50%;
-  background:var(--green-light);flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;font-weight:700;color:var(--green-dark);
-}
-.v-name{font-weight:700;font-size:13px;color:var(--green-dark);}
-.v-role{font-size:12px;color:var(--text-muted);}
-
-/* FINAL CTA */
-.final{
-  background:var(--green-dark);color:var(--white);
-  text-align:center;padding:110px 2rem;
-}
-.final-tag{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#a8d5b0;text-transform:uppercase;margin-bottom:1.2rem;}
-.final h2{
-  font-family:'Zen Maru Gothic','Hiragino Kaku Gothic ProN','Hiragino Sans',YuGothic,sans-serif;
-  font-size:clamp(1.8rem,5vw,3rem);
-  color:var(--white);line-height:1.3;font-weight:700;margin-bottom:0.6rem;
-}
-.final-ja{font-size:clamp(0.9rem,2vw,1.1rem);color:#a8d5b0;margin-bottom:2rem;display:block;}
-.final-sub{color:rgba(255,255,255,0.6);font-size:15px;max-width:460px;margin:0 auto 2.5rem;line-height:1.75;}
-.final-btn{
-  display:inline-flex;align-items:center;gap:10px;
-  background:var(--white);color:var(--green-dark);
-  padding:17px 42px;border-radius:100px;
-  font-size:1rem;font-weight:700;text-decoration:none;
-  transition:all 0.25s;
-}
-.final-btn:hover{background:var(--green-light);transform:translateY(-3px);}
-
-/* FOOTER */
-footer{
-  background:var(--green-dark);border-top:1px solid rgba(255,255,255,0.1);
-  padding:2rem;text-align:center;
-  color:rgba(255,255,255,0.4);font-size:13px;
-}
-footer a{color:rgba(255,255,255,0.5);text-decoration:none;margin:0 0.8rem;}
-footer a:hover{color:var(--white);}
-
-/* ANIMATIONS */
-.fade-up{opacity:0;transform:translateY(26px);transition:opacity 0.65s ease,transform 0.65s ease;}
-.fade-up.visible{opacity:1;transform:translateY(0);}
-.fade-up:nth-child(2){transition-delay:.1s;}
-.fade-up:nth-child(3){transition-delay:.18s;}
-.fade-up:nth-child(4){transition-delay:.26s;}
-.fade-up:nth-child(5){transition-delay:.32s;}
-
-/* RESPONSIVE */
 @media(max-width:640px){
-  nav{padding:0 1rem;}
-  section,
-  .who,.problem,.features,.how,.plans,.voices,.final{padding:70px 1.25rem;}
-  .hero{padding:100px 1.25rem 60px;}
-  .step{grid-template-columns:48px 1fr;gap:1rem;}
-  .step-num{width:48px;height:48px;font-size:1.2rem;}
-  .step:not(:last-child)::before{left:23px;top:44px;}
+  section{padding:58px 0;}
+  .logcard{transform:none;}
+  .hero{padding:48px 0 62px;}
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ══════════ NAV ══════════ -->
 <nav>
-  <a href="#" class="logo-mark">
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-      <rect width="36" height="36" rx="10" fill="#3a7d44"/>
-      <text x="18" y="25" text-anchor="middle" font-family="Georgia,serif" font-size="18" font-weight="bold" fill="white">G</text>
-      <path d="M14 29 Q18 23 22 29" stroke="#7eca8a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-      <path d="M18 23 Q19 19 22 17" stroke="#7eca8a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    </svg>
-    <span class="logo-text">GLOONA</span>
+  <a href="#top" class="brand">
+    <img src="/gloona-wordmark.png" alt="GLOONA" class="brand-logo">
+    <span class="brand-reading">～ グローナ ～</span>
   </a>
-  <a href="https://gloona.vercel.app" class="nav-cta">無料で試す</a>
+  <a href="#register" class="btn btn-line sm">LINEで先行登録</a>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bubbles">
-    <div class="bubble b1"></div>
-    <div class="bubble b2"></div>
-    <div class="bubble b3"></div>
-    <div class="bubble b4"></div>
-    <div class="bubble b5"></div>
-  </div>
-  <div class="hero-content">
-    <div class="hero-eyebrow">🌿 植物を育てるすべての人へ</div>
-    <h1>
-      植物の記録を、<br>
-      <em>もっとたのしく。</em>
-    </h1>
-    <p class="hero-sub">
-      観葉植物・ガーデニング・家庭菜園・農業まで。<br>
-      写真・観察メモ・天気をまとめて記録。
-    </p>
-    <div class="hero-cta-wrap">
-      <a href="https://gloona.vercel.app" class="hero-cta">
-        🌱 無料で試してみる
-      </a>
-      <span class="hero-cta-note">クレジットカード不要 · LINEで簡単ログイン</span>
-    </div>
-  </div>
-</section>
+<!-- ══════════ HERO ══════════ -->
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
 
-<!-- WHO IS IT FOR -->
-<section class="who">
-  <div class="who-inner">
-    <div class="section-label">FOR EVERYONE</div>
-    <h2>どんな「そだてびと」にも</h2>
-    <p class="who-sub">鉢植えひとつから、広い農地まで。<br>GLOONAは、植物を育てるすべての人のために作られています。</p>
-    <div class="who-tiles">
-      <div class="who-tile a fade-up">
-        <div class="emoji">🪴</div>
-        <div class="tile-title">観葉植物</div>
-        <div class="tile-desc">水やり・葉の変化写真に記録</div>
-        <div class="tile-desc">お気に入りをいつでも振り返り</div>
-      </div>
-      <div class="who-tile b fade-up">
-        <div class="emoji">🌷</div>
-        <div class="tile-title">ガーデニング</div>
-        <div class="tile-desc">開花・季節の変化を記録</div>
-        <div class="tile-desc">アルバムのように管理できます</div>
-      </div>
-      <div class="who-tile c fade-up">
-        <div class="emoji">🥦</div>
-        <div class="tile-title">家庭菜園</div>
-        <div class="tile-desc">プランターや畑の区画ごとに</div>
-        <div class="tile-desc">野菜の成長を記録・分析</div>
-      </div>
-      <div class="who-tile d fade-up">
-        <div class="emoji">🌾</div>
-        <div class="tile-title">農家・プロ</div>
-        <div class="tile-desc">複数スペース・品種を</div>
-        <div class="tile-desc">天気データと紐づけ管理</div>
-      </div>
-    </div>
-  </div>
-</section>
+    <div class="hero-copy">
+      <span class="hero-badge">GLOONA（グローナ）｜家庭菜園・市民農園・小規模農家むけ</span>
+      <h1>畑の記録に、<br><span class="hl">その土地の天気</span>を。</h1>
+      <p class="hero-sub">
+        郵便番号を入れるだけ。記録をつけたその日の天気が、写真とメモと一緒に残ります。
+        「なぜ育ったか」が、来年の答えになる。
+      </p>
 
-<!-- PROBLEM -->
-<section class="problem">
-  <div class="problem-inner">
-    <div class="section-label">PROBLEM</div>
-    <h2 class="section-title-serif fade-up">
-      記録、続いてますか？
-      <span class="section-title-ja">よくある課題</span>
-    </h2>
-    <div class="fade-up" style="margin-bottom:0;">
-      <div class="problem-lead">
-        <span class="lead-check">✓</span>
-        <span class="lead-text"><mark class="marker-yellow">「写真は撮ったけど、カメラロールに埋もれた」</mark></span>
-      </div>
-      <div class="problem-lead">
-        <span class="lead-check">✓</span>
-        <span class="lead-text"><mark class="marker-green">「ノートに書いたけど、後から比較できない」</mark></span>
-      </div>
-      <p style="color:var(--text-muted);font-size:14px;margin-top:1rem;">そんな経験、ありませんか？</p>
-    </div>
-    <div class="problem-grid">
-      <div class="problem-card fade-up">
-        <div class="icon">📱</div>
-        <h3>写真がバラバラ</h3>
-        <p>成長記録の写真がカメラロールに埋もれて、後から探せない。</p>
-      </div>
-      <div class="problem-card fade-up">
-        <div class="icon">📓</div>
-        <h3>ノートが続かない</h3>
-        <p>手書きの記録はいつの間にか途絶え、見返すことも困難に。</p>
-      </div>
-      <div class="problem-card fade-up">
-        <div class="icon">🌧️</div>
-        <h3>天気との関係が不明</h3>
-        <p>「なぜ枯れたか」「なぜ育ったか」天気との紐づけができていない。</p>
-      </div>
-      <div class="problem-card fade-up">
-        <div class="icon">🔄</div>
-        <h3>来年に活かせない</h3>
-        <p>今シーズンの成功・失敗が記録に残らず、毎年同じ失敗を繰り返す。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURES -->
-<section class="features">
-  <div class="features-inner">
-    <div class="section-label">FEATURES</div>
-    <h2 class="section-title-serif fade-up">
-      GLOONAでできること
-      <span class="section-title-ja">主な機能</span>
-    </h2>
-    <p style="color:var(--text-muted);font-size:15px;max-width:520px;margin-bottom:0;" class="fade-up">
-      記録・天気・写真管理を一つのアプリに。
-    </p>
-    <p style="color:var(--text-muted);font-size:15px;max-width:520px;margin-bottom:0;" class="fade-up">
-      シンプルで続けやすい設計。
-    </p>
-    <div class="features-grid">
-      <div class="feature-card fade-up">
-        <div class="feature-icon">📍</div>
-        <h3>スペース管理</h3>
-        <p>庭・ベランダ・畑など「場所」ごとに管理。</p>
-        <p>郵便番号から住所・位置を自動入力できます。</p>
-      </div>
-      <div class="feature-card fade-up">
-        <div class="feature-icon">🌱</div>
-        <h3>そだて記録</h3>
-        <p>1つのスペースで複数の植物・作物を記録。</p>
-        <p>天気・水やり・メモなどの記録を一元管理。</p>
-      </div>
-      <div class="feature-card fade-up">
-        <div class="feature-icon">📸</div>
-        <h3>写真つき観察ログ</h3>
-        <p>成長の変化を写真付きで残せます。</p>
-        <p>履歴から簡単に振り返り。</p>
-      </div>
-      <div class="feature-card fade-up">
-        <div class="feature-icon">☁️</div>
-        <h3>天気の自動記録</h3>
-        <p>エリアごとに天気データを自動で取得・保存。</p>
-        <p>日々の記録と紐づけて確認できます。</p>
-      </div>
-      <div class="feature-card fade-up">
-        <div class="feature-icon">📱</div>
-        <h3>LINEでかんたんログイン</h3>
-        <p>LINEアカウントでそのまま使えます。</p>
-        <p>面倒な会員登録なしでスムーズにスタート。</p>
-      </div>
-      <div class="feature-card fade-up">
-        <div class="feature-icon">💧</div>
-        <h3>水やり判定</h3>
-        <p>天気・土壌・前回の記録から「今日水やりが必要か」を判定。</p>
-        <p>通知でうっかり忘れも防止。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section class="how">
-  <div class="how-inner">
-    <div class="section-label">HOW TO START</div>
-    <h2 class="section-title-serif fade-up">
-      ３ステップでスタート
-      <span class="section-title-ja">使い方</span>
-    </h2>
-    <div class="steps">
-      <div class="step fade-up">
-        <div class="step-num">1</div>
-        <div class="step-body">
-          <div class="step-chip">30秒</div>
-          <h3>LINEでログイン</h3>
-          <p>LINEアカウントでワンタップ。
-          <p>会員登録・メールアドレスは不要です。</p>
+      <!-- ── 署名要素：郵便番号デモ ── -->
+      <div class="pc-demo">
+        <div class="pc-demo-label"><span class="dot"></span>畑の郵便番号を入れると、エリアまで自動で入ります</div>
+        <div class="pc-row">
+          <label class="pc-input-shell" for="zipInput">
+            <span class="pc-mark" aria-hidden="true">〒</span>
+            <input id="zipInput" type="text" inputmode="numeric" autocomplete="postal-code"
+                   maxlength="8" placeholder="123-4567" aria-label="郵便番号">
+          </label>
         </div>
+        <div class="pc-result" id="zipResult" role="status" aria-live="polite"></div>
+        <p class="pc-note">番地は聞きません。エリアの特定と気象データの取得にだけ使います。</p>
       </div>
-      <div class="step fade-up">
-        <div class="step-num">2</div>
-        <div class="step-body">
-          <div class="step-chip">1分</div>
-          <h3>スペースと植物を登録</h3>
-          <p>「ベランダ」「庭の南側」など場所を作って、育てている植物を追加するだけ。</p>
-          <p>郵便番号で位置も自動入力。</p>
+
+      <div class="hero-cta">
+        <a href="#register" class="btn btn-line">LINEで先行登録する（無料）</a>
+        <p class="hero-cta-note">
+          スマホアプリは<b>2026年10月リリース予定</b>。<br>
+          先行登録された方は、Plusを3ヶ月無料でお使いいただけます。
+        </p>
+        <p class="hero-secondary">
+          今すぐ触りたい方は <a href="https://gloona.vercel.app">Web版（ベータ）</a> からどうぞ。
+        </p>
+      </div>
+    </div>
+
+    <!-- ── 栽培日誌カード ── -->
+    <div style="margin-top:12px;">
+      <figure class="logcard">
+        <span class="logcard-flag">Plus・開発中の機能を含みます</span>
+        <div class="logcard-head">
+          <span class="logcard-crop">ナス／東の畝 2列目</span>
+          <span class="logcard-date">2026-06-14</span>
         </div>
+        <div class="logcard-photo">
+          <div class="logcard-stamp">
+            <span class="s1">最高／最低</span>
+            <span class="s2">27.4/18.1</span>
+            <span class="s3">降水 12.5mm</span>
+          </div>
+        </div>
+        <div class="logcard-body">
+          <div class="logcard-meta">
+            <span class="chip">一番果を摘果</span>
+            <span class="chip soil">追肥</span>
+            <span class="chip sky">前日から連続降雨</span>
+          </div>
+          <p class="logcard-text">
+            葉色がやや薄い。雨続きで肥料が流れたか。追肥して様子見。
+            去年は同じ時期に <strong>アブラムシ</strong> が出たので要注意。
+          </p>
+          <div class="logcard-foot">
+            <span>定植から 41日</span>
+            <span class="mono">前年同日と比較 →</span>
+          </div>
+        </div>
+      </figure>
+      <p class="logcard-caption">
+        記録画面のイメージ。天気の自動記録は現在ご利用いただけます。<br>
+        前年比較とAIアドバイスはPlus向けに開発中です。
+      </p>
+    </div>
+
+  </div>
+</header>
+
+<!-- ══════════ 課題 ══════════ -->
+<section class="sec-kraft">
+  <div class="wrap">
+    <span class="eyebrow rise">畑の記録あるある</span>
+    <h2 class="h2 rise">来年のために書いてるのに、来年使えない。</h2>
+
+    <div class="pain-quotes rise">
+      <p class="pain-q"><span class="q">“</span>去年いつ種をまいたか、もう思い出せない</p>
+      <p class="pain-q"><span class="q">“</span>枯れた原因が、低温なのか水切れなのか分からないまま</p>
+    </div>
+
+    <p class="lede rise" style="margin-bottom:6px;">栽培記録アプリ「GLOONA」は、この繰り返しを終わらせるために作りました。</p>
+
+    <div class="pain-grid">
+      <div class="pain-card rise">
+        <h3>適期が毎年リセットされる</h3>
+        <p>播種・定植の適期は、その畑の去年の記録にしかありません。カレンダーや書籍の「一般的な時期」は、あなたの畑には半月ずれます。</p>
       </div>
-      <div class="step fade-up">
-        <div class="step-num">3</div>
-        <div class="step-body">
-          <div class="step-chip">毎日少し</div>
-          <h3>写真を撮って記録</h3>
-          <p>気になったら写真とひとこと。</p>
-          <p>天気は自動で簡単紐づけ。</p>
+      <div class="pain-card rise">
+        <h3>天気とつながっていない</h3>
+        <p>記録した日がどんな天気だったかは、あとから調べ直せません。気温も雨量も残っていないと、原因の切り分けができない。</p>
+      </div>
+      <div class="pain-card rise">
+        <h3>区画がごちゃつく</h3>
+        <p>複数の畝で複数の品種を回していると、紙のノートでは追えなくなる。連作を避けたいのに、去年どこに何を植えたかが曖昧に。</p>
+      </div>
+      <div class="pain-card rise">
+        <h3>写真がカメラロールに埋もれる</h3>
+        <p>撮るだけは撮っている。でも作物と日付にひもづいていないので、比較にも相談にも使えないまま流れていく。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 差別化（主役） ══════════ -->
+<section class="why">
+  <div class="wrap">
+    <div class="why-inner">
+      <span class="eyebrow rise">GLOONAが他と違うところ</span>
+      <h2 class="h2 rise">今日の天気は、調べればわかる。<br>去年の天気は、誰も教えてくれない。</h2>
+      <p class="lede rise">
+        明日の予報はスマホですぐ出ます。でも「去年の6月14日、うちの畑がどうだったか」は、
+        どこにも残っていません。GLOONAは記録をつけたその日の天気を一緒に保存して、
+        何年経っても引き出せるようにします。
+      </p>
+
+      <div class="why-steps">
+        <div class="why-step rise">
+          <div class="why-num">01</div>
+          <div>
+            <h3>郵便番号だけで、畑の場所が決まる</h3>
+            <p>住所の入力も、地図のピン立ても不要。郵便番号から市区町村と緯度経度を自動で引き当てます。番地は聞きません。</p>
+            <div class="why-stat">
+              <span class="n">約11万</span>
+              <span class="l">全国の郵便番号区画を独自にポリゴン化。場所の特定に使っています</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="why-step rise">
+          <div class="why-num sky">02</div>
+          <div>
+            <h3>記録した日の天気が、そのまま残る</h3>
+            <p>お住まいの市区町村単位で、気温と降水を毎日自動で取得して保存します。写真とメモと天気が同じ1件に入っているので、「葉色が薄い」と「前日から連続降雨」が、来年そのまま並べて読めます。</p>
+            <p style="margin-top:8px;font-size:.86rem;color:var(--ink-soft);">天気予報そのものは、お使いの天気アプリのほうが正確です。GLOONAが引き受けるのは、過ぎた日の天気を残しておくほうの仕事です。</p>
+          </div>
+        </div>
+
+        <div class="why-step rise">
+          <div class="why-num">03</div>
+          <div>
+            <h3>畝・区画・作物の三層で管理する</h3>
+            <p>1つの畑に複数の区画、1区画に複数の作物。実際の畑の構造そのままで記録できるので、連作の履歴も自然に残ります。</p>
+          </div>
+        </div>
+
+        <div class="why-step rise">
+          <div class="why-num soon">04</div>
+          <div>
+            <h3>市区町村より、さらに細かく<span class="tag-soon">開発中</span></h3>
+            <p>同じ市区町村でも、標高や地形が違えば霜の降りる時期は2週間ずれます。いま扱えるのは市区町村単位までですが、地形データを使って畑ごとの条件に近づける検証を進めています。「今週末は晩霜のおそれ。定植は待ってください」を、あなたの畑の条件で出すのが目標です。</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PLANS -->
-<section class="plans">
-  <div class="plans-inner">
-    <div class="section-label">PRICING</div>
-    <h2 class="section-title-serif fade-up">
-      まずは無料でお試し
-      <span class="section-title-ja">料金プラン</span>
-    </h2>
-    <p style="color:var(--text-muted);font-size:15px;max-width:480px;margin-bottom:0;" class="fade-up">
-      鉢植えひとつの方も、広い農地をお持ちの方も。
-    </p>
-    <div class="plans-grid">
-      <div class="plan-card fade-up">
-        <div class="plan-name">Free</div>
-        <p style="font-size:13px;color:var(--text-muted);margin-bottom:0.25rem;">無料プラン</p>
-        <div class="plan-price">¥0<span> / 月</span></div>
-        <p class="plan-sub">まずはここから。基本機能はすべて使えます。</p>
-        <ul class="plan-list">
-          <li><span class="ck">✓</span><span>観察記録 1回/植物/日</span></li>
-          <li><span class="ck">✓</span><span>写真ストレージ 200MB</span></li>
-          <li><span class="ck">✓</span><span>スペース 1つ・区画 3つまで</span></li>
-          <li><span class="ck">✓</span><span>履歴 3ヶ月分</span></li>
-          <li><span class="ck">✓</span><span>天気の自動記録</span></li>
+<!-- ══════════ 機能 ══════════ -->
+<section class="sec-kraft">
+  <div class="wrap">
+    <span class="eyebrow rise">できること</span>
+    <h2 class="h2 rise">GLOONAでできること</h2>
+    <p class="lede rise">記録は、続かなければ意味がない。作業のあと、泥のついた手でも30秒で終わる設計にしています。</p>
+
+    <div class="feat-grid">
+      <div class="feat rise">
+        <div class="feat-ic">🗺️</div>
+        <h3>畑と区画の登録</h3>
+        <p>「市民農園 A-12」「自宅の南側」のように畑を作り、その中に畝や区画を並べます。郵便番号から位置は自動入力。</p>
+      </div>
+      <div class="feat rise">
+        <div class="feat-ic">📷</div>
+        <h3>写真つき観察記録</h3>
+        <p>写真とひとことで1件。作物・区画・日付・天気が全部ひもづいた状態で残ります。</p>
+      </div>
+      <div class="feat rise">
+        <div class="feat-ic">🌡️</div>
+        <h3>天気は書かなくていい</h3>
+        <p>市区町村単位の気温と降水を毎日自動で保存。記録画面に天気がそのまま載るので、入力する手間はありません。</p>
+      </div>
+      <div class="feat rise">
+        <div class="feat-ic">📖</div>
+        <h3>AI観察ノート</h3>
+        <p>ためた記録と天気から、その作物の経過をまとめた振り返りノートを生成します。相談や来季の計画にそのまま使えます。</p>
+      </div>
+      <div class="feat rise">
+        <div class="feat-ic">🕐</div>
+        <h3>履歴のふりかえり</h3>
+        <p>同じ区画・同じ作物の記録を時系列で並べて比較。年をまたぐほど価値が出ます。</p>
+      </div>
+      <div class="feat rise">
+        <div class="feat-ic">💬</div>
+        <h3>LINEでログイン</h3>
+        <p>メールアドレスもパスワードも不要。LINEのアカウントでそのまま始められます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 料金 ══════════ -->
+<section class="sec-paper">
+  <div class="wrap">
+    <span class="eyebrow rise">料金</span>
+    <h2 class="h2 rise">プランター1つでも、畑1反でも。</h2>
+    <p class="lede rise">記録をつけるだけなら、ずっと無料で使えます。</p>
+
+    <div class="plans">
+      <div class="plan rise">
+        <div class="plan-name">フリー</div>
+        <div class="plan-for">まずは記録を習慣にしたい方に</div>
+        <div class="plan-price">¥0<small> ／ 月</small></div>
+        <hr class="plan-hr">
+        <ul>
+          <li><span class="ck">✓</span>観察記録 1日1回／作物</li>
+          <li><span class="ck">✓</span>天気の自動記録</li>
+          <li><span class="ck">✓</span>写真 200MBまで</li>
+          <li><span class="ck">✓</span>畑1つ・区画3つまで</li>
+          <li><span class="ck">✓</span>履歴3ヶ月分</li>
+          <li><span class="ck x">－</span>AI観察ノートは1通ずつ購入</li>
         </ul>
-        <a href="https://gloona.vercel.app" class="plan-btn outline">無料で始める</a>
+        <p class="plan-btm">クレジットカードの登録は不要です。</p>
       </div>
-      <div class="plan-card featured fade-up">
-        <div class="plan-badge">🌟 おすすめ</div>
-        <div class="plan-name">Plus</div>
-        <p style="font-size:13px;color:var(--text-muted);margin-bottom:0.25rem;">プラスプラン（近日公開）</p>
-        <div class="plan-price">近日<span>&nbsp;公開</span></div>
-        <p class="plan-sub">もっと使いたくなったときに。記録も保存もフルで使えます。</p>
-        <ul class="plan-list">
-          <li><span class="ck">✓</span><span>観察記録 3回/植物/日</span></li>
-          <li><span class="ck">✓</span><span>写真ストレージ 1GB</span></li>
-          <li><span class="ck">✓</span><span>スペース・区画 無制限</span></li>
-          <li><span class="ck">✓</span><span>全履歴を無期限保存</span></li>
-          <li><span class="ck">✓</span><span>AI 栽培アドバイス（予定）</span></li>
-          <li><span class="ck">✓</span><span>観察ノートAI生成 無制限</span></li>
+
+      <div class="plan hi rise">
+        <span class="plan-flag">先行登録で3ヶ月無料</span>
+        <div class="plan-name">プラス</div>
+        <div class="plan-for">複数区画をまわしている方に</div>
+        <div class="plan-price">近日<small> 公開</small></div>
+        <hr class="plan-hr">
+        <ul>
+          <li><span class="ck">✓</span>観察記録 1日3回／作物</li>
+          <li><span class="ck">✓</span>写真 1GBまで</li>
+          <li><span class="ck">✓</span>畑・区画は無制限</li>
+          <li><span class="ck">✓</span>履歴を無期限で保存</li>
+          <li><span class="ck">✓</span>AI観察ノート 無制限</li>
+          <li><span class="ck">✓</span>畑ごとのリスク通知（開発中）</li>
         </ul>
-        <a href="https://gloona.vercel.app" class="plan-btn primary">無料で試す</a>
+        <p class="plan-btm">価格は先行登録の方に先にお知らせします。</p>
       </div>
+    </div>
+
+    <div class="addon rise">
+      <div>
+        <div class="addon-t">AI観察ノート・1通から購入</div>
+        <p class="addon-d">月額に抵抗がある方へ。必要なときに1通だけ買えます。</p>
+      </div>
+      <div class="addon-p">¥200<small style="font-family:'Noto Sans JP';font-size:.7rem;font-weight:400;">／通</small></div>
     </div>
   </div>
 </section>
 
-<!-- VOICES -->
-<section class="voices">
-  <div class="voices-inner">
-    <div class="section-label">VOICES</div>
-    <h2 class="section-title-serif fade-up">
-      使ってみた方の声
-      <span class="section-title-ja">ユーザーの声</span>
-    </h2>
-    <div class="voices-grid">
-      <div class="voice-card fade-up">
-        <div class="voice-stars">★★★★★</div>
-        <p class="voice-text">「写真と天気が一緒に記録されるのが便利。スマホ一つで済むようになりました。」</p>
-        <div class="voice-author">
-          <div class="v-avatar">K</div>
-          <div>
-            <div class="v-name">青森県・にんにく農家</div>
-            <div class="v-role">PoC参加者</div>
-          </div>
-        </div>
-      </div>
-      <div class="voice-card fade-up">
-        <div class="voice-stars">★★★★★</div>
-        <p class="voice-text">「LINEでログインできるのが使いやすい。家庭菜園の記録がアプリでちゃんとつけられるようになった。」</p>
-        <div class="voice-author">
-          <div class="v-avatar">M</div>
-          <div>
-            <div class="v-name">家庭菜園ユーザー</div>
-            <div class="v-role">ベータテスター</div>
-          </div>
-        </div>
-      </div>
-      <div class="voice-card fade-up">
-        <div class="voice-stars">★★★★☆</div>
-        <p class="voice-text">「観葉植物の水やりタイミングが分からなくなっていたけど、記録をつけるようになって枯らさなくなった。」</p>
-        <div class="voice-author">
-          <div class="v-avatar">A</div>
-          <div>
-            <div class="v-name">観葉植物好き</div>
-            <div class="v-role">ベータテスター</div>
-          </div>
-        </div>
-      </div>
+<!-- ══════════ FAQ ══════════ -->
+<section class="sec-kraft">
+  <div class="narrow">
+    <span class="eyebrow rise">よくある質問</span>
+    <h2 class="h2 rise">はじめる前に</h2>
+
+    <div class="faq rise">
+      <details>
+        <summary>観葉植物やガーデニングにも使えますか？</summary>
+        <p>使えます。鉢植えを「区画」として登録すれば同じように記録できます。ただしGLOONAは屋外の畑・プランター栽培を前提に設計しているため、室内の観葉植物向けの機能（置き場所診断など）はありません。</p>
+      </details>
+      <details>
+        <summary>郵便番号は何に使われますか？</summary>
+        <p>エリアの特定と、そのエリアの気象データの取得にのみ使います。番地や建物名をお聞きすることはありません。畑の正確な場所が外部に出ることもありません。</p>
+      </details>
+      <details>
+        <summary>天気はどのくらい細かい範囲のものですか？</summary>
+        <p>現在は市区町村単位です。園芸書などの「暖地・中間地・寒地」といった区分よりはずっと細かいですが、同じ市区町村でも標高や地形によって実際の気温は変わります。より畑に近い条件で扱えるよう開発を進めています。なお天気予報の提供は目的としていません。GLOONAが残すのは、記録をつけた日の天気の実績です。</p>
+      </details>
+      <details>
+        <summary>出荷や認証に使える帳票は出せますか？</summary>
+        <p>現時点では対応していません。GLOONAは家庭菜園から小規模農家までを想定しており、GAP認証や出荷伝票向けの帳票出力は今後の検討事項です。業として大規模に営農されている場合は、専用の営農管理システムのほうが適しています。</p>
+      </details>
+      <details>
+        <summary>スマートフォンアプリはありますか？</summary>
+        <p>iOS・Android版を2026年10月のリリースに向けて開発しています。それまではWeb版（スマホのホーム画面に追加すればアプリのように使えます）をお試しいただけます。</p>
+      </details>
+      <details>
+        <summary>無料のまま使い続けられますか？</summary>
+        <p>はい。記録・写真・天気の自動記録といった基本機能は、フリープランのままずっと無料でお使いいただけます。</p>
+      </details>
+      <details>
+        <summary>先行登録すると何が届きますか？</summary>
+        <p>リリースのお知らせと、Plus 3ヶ月無料の案内をLINEでお送りします。配信は月に1〜2回程度で、いつでもブロックできます。</p>
+      </details>
     </div>
   </div>
 </section>
 
-<!-- FINAL CTA -->
-<section class="final">
-  <div class="final-tag">🌿 Start Growing Smarter</div>
-  <h2>植物と、もっと仲良くなろう。</h2>
-  <span class="final-ja">あしたを育てるファームアプリ — GLOONA</span>
-  <p class="final-sub">無料で始められます。ログインして最初の記録をつけてみましょう。</p>
-  <a href="https://gloona.vercel.app" class="final-btn">🌱 無料で試してみる →</a>
+<!-- ══════════ 最終CTA ══════════ -->
+<section class="sec-dark final" id="register">
+  <div class="narrow">
+    <span class="eyebrow">先行登録</span>
+    <h2>この秋、あなたの畑から<br>はじめてみませんか。</h2>
+    <p>
+      LINEで友だち追加するだけ。リリース時にお知らせが届きます。
+      秋冬野菜の植えつけに、間に合わせます。
+    </p>
+
+    <!-- ▼ 差し替え：LINE Official Account Manager で発行した友だち追加URL -->
+    <a href="https://lin.ee/XXXXXXX" class="btn btn-line">LINEで先行登録する</a>
+
+    <div class="final-perks">
+      <span class="perk">Plus 3ヶ月無料</span>
+      <span class="perk">リリース通知</span>
+      <span class="perk">登録は10秒</span>
+      <span class="perk">いつでも解除可</span>
+    </div>
+
+    <p class="final-alt">
+      先に触ってみたい方は <a href="https://gloona.vercel.app">Web版（ベータ）</a> をどうぞ。
+    </p>
+  </div>
 </section>
 
 <footer>
-  <div style="margin-bottom:0.75rem;">
+  <img src="/gloona-logo-full.png" alt="GLOONA 栽培記録・管理アプリ" class="footer-logo">
+  <div style="margin:14px 0 9px;">
     <a href="#">利用規約</a>
     <a href="#">プライバシーポリシー</a>
     <a href="mailto:hello@gloona.app">お問い合わせ</a>
   </div>
-  <div>© 2025 GLOONA. All rights reserved.</div>
+  <div>© 2026 GLOONA</div>
 </footer>
 
+<!-- モバイル固定CTA -->
+<div class="sticky-cta">
+  <a href="#register" class="btn btn-line">LINEで先行登録する（無料）</a>
+</div>
+
 <script>
-// ローカルファイル・FB等のインアプリブラウザでもfade-upが消えないようにする
-function initFadeUp() {
-  const els = document.querySelectorAll('.fade-up');
-  if (!els.length) return;
-  // IntersectionObserverが使える環境かつhttps/httpのみ observer を使う
-  const isLocal = location.protocol === 'file:' || location.protocol === 'about:';
-  if (isLocal || typeof IntersectionObserver === 'undefined') {
-    // ローカルは全部即表示
-    els.forEach(el => el.classList.add('visible'));
-    return;
+(function(){
+  'use strict';
+
+  /* ── 郵便番号 上2桁 → 都道府県（完全オフライン判定） ───────────
+     気候の数値は一切出しません。地域が確定することだけを見せます。 */
+  var PREF = {
+    '00':'北海道','01':'秋田県','02':'岩手県','03':'青森県','04':'北海道','05':'北海道',
+    '06':'北海道','07':'北海道','08':'北海道','09':'北海道',
+    '10':'東京都','11':'東京都','12':'東京都','13':'東京都','14':'東京都','15':'東京都',
+    '16':'東京都','17':'東京都','18':'東京都','19':'東京都','20':'東京都',
+    '21':'神奈川県','22':'神奈川県','23':'神奈川県','24':'神奈川県','25':'神奈川県',
+    '26':'千葉県','27':'千葉県','28':'千葉県','29':'千葉県',
+    '30':'茨城県','31':'茨城県','32':'栃木県',
+    '33':'埼玉県','34':'埼玉県','35':'埼玉県','36':'埼玉県','37':'群馬県',
+    '38':'長野県','39':'長野県','40':'山梨県',
+    '41':'静岡県','42':'静岡県','43':'静岡県',
+    '44':'愛知県','45':'愛知県','46':'愛知県','47':'愛知県','48':'愛知県','49':'愛知県',
+    '50':'岐阜県','51':'三重県','52':'滋賀県',
+    '53':'大阪府','54':'大阪府','55':'大阪府','56':'大阪府','57':'大阪府','58':'大阪府','59':'大阪府',
+    '60':'京都府','61':'京都府','62':'京都府','63':'奈良県','64':'和歌山県',
+    '65':'兵庫県','66':'兵庫県','67':'兵庫県','68':'鳥取県','69':'島根県',
+    '70':'岡山県','71':'岡山県','72':'広島県','73':'広島県','74':'山口県','75':'山口県',
+    '76':'香川県','77':'徳島県','78':'高知県','79':'愛媛県',
+    '80':'福岡県','81':'福岡県','82':'福岡県','83':'福岡県',
+    '84':'佐賀県','85':'長崎県','86':'熊本県','87':'大分県','88':'宮崎県','89':'鹿児島県',
+    '90':'沖縄県','91':'福井県','92':'石川県','93':'富山県','94':'新潟県','95':'新潟県',
+    '96':'福島県','97':'福島県','98':'宮城県','99':'山形県'
+  };
+
+  var input  = document.getElementById('zipInput');
+  var result = document.getElementById('zipResult');
+  if(!input || !result) return;
+
+  /* ── 設定 ─────────────────────────────────────────────
+     ZIP_ENDPOINT : 郵便番号→住所を返す自前API。`{zip}` が7桁の数字に置換されます。
+                    例) https://gloona.vercel.app/api/zip?code={zip}
+                    返り値は { pref, city, area } もしくは
+                    { address1, address2, address3 } のどちらでも受け取れます。
+                    空文字のままだと都道府県までの判定で止まります（デモとしては動きます）。
+     ──────────────────────────────────────────────────── */
+  /* 自前エンドポイントを入れると市区町村・エリアまで埋まります。
+     例) https://gloona.vercel.app/api/zip?code={zip}
+     返り値は { pref, city, area } / { address1, address2, address3 } のどちらでも可。
+     空のままなら通信せず、都道府県までで止まります（それでもLPは成立します）。
+     ※ zipcloud等の外部APIはCORS非対応でブラウザから直接は叩けません。 */
+  var ZIP_ENDPOINT = '';
+  var LINE_URL     = 'https://lin.ee/XXXXXXX';   /* ← 友だち追加URLに差し替え */
+
+  var shown = '';        /* 現在描画中の状態キー。同じなら描き直さない */
+  var reqId = 0;         /* 遅れて返ってきたレスポンスを捨てるための連番 */
+
+  function esc(t){
+    return String(t == null ? '' : t)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  els.forEach(el => obs.observe(el));
-  // 3秒後に未表示のものも強制表示（フォールバック）
-  setTimeout(() => els.forEach(el => el.classList.add('visible')), 3000);
-}
-initFadeUp();
+
+  function field(key, val, pending){
+    return '<div class="pc-field' + (pending ? ' pending' : '') + '">' +
+             '<span class="k">' + key + '</span>' +
+             '<span class="v">' + val + '</span>' +
+           '</div>';
+  }
+
+  var SKEL = '<span class="pc-skel"></span>';
+
+  function render(pref, city, area, state){
+    var html = '<div class="pc-fields">';
+    html += field('都道府県', esc(pref), false);
+
+    if(state === 'loading'){
+      html += field('市区町村', SKEL, true);
+      html += field('エリア',   SKEL, true);
+    } else if(state === 'done'){
+      html += field('市区町村', esc(city), false);
+      html += field('エリア',   esc(area || '—'), false);
+    } else if(state === 'failed'){
+      html += field('市区町村', 'アプリ内で自動入力されます', true);
+    }
+    html += '</div>';
+
+    if(state === 'done' || state === 'failed'){
+      html += '<div class="pc-line" style="margin-top:11px;">' +
+                '<span class="pc-tick wait">✓</span>' +
+                '<span>この市区町村の天気を、毎日記録に残していきます</span>' +
+              '</div>' +
+              '<a href="' + LINE_URL + '" class="btn btn-line pc-cta">この畑で記録をはじめる</a>' +
+              '<p class="pc-cta-note">LINEで先行登録。10秒で終わります。</p>';
+    }
+    result.className = 'pc-result on';
+    result.innerHTML = html;
+  }
+
+  function renderPartial(pref, len){
+    var html = '<div class="pc-fields">' +
+      field('都道府県', esc(pref), false) +
+      field('市区町村', 'あと' + (7 - len) + '桁でエリアまで特定します', true) +
+    '</div>';
+    result.className = 'pc-result on';
+    result.innerHTML = html;
+  }
+
+  function clear(){
+    shown = '';
+    result.className = 'pc-result';
+    result.innerHTML = '';
+  }
+
+  function fetchAddress(digits, pref){
+    var mine = ++reqId;
+
+    if(!ZIP_ENDPOINT){ render(pref, '', '', 'failed'); return; }
+
+    render(pref, '', '', 'loading');
+
+    fetch(ZIP_ENDPOINT.replace('{zip}', digits), { headers:{ 'Accept':'application/json' }})
+      .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function(d){
+        if(mine !== reqId) return;                 /* 新しい入力に追い越された */
+        var o = (d && d.results && d.results[0]) ? d.results[0] : d;
+        if(!o) throw new Error('not found');
+        var city = o.city || o.address2 || '';
+        var area = o.area || o.town || o.address3 || '';
+        if(!city) throw new Error('empty');
+        render(pref, city, area, 'done');
+      })
+      .catch(function(){
+        if(mine !== reqId) return;
+        render(pref, '', '', 'failed');
+      });
+  }
+
+  /* 上2桁が確定した時点で都道府県、7桁揃ったらエリアまで。ボタンは置かない */
+  function judge(){
+    var digits = (input.value || '').replace(/[^0-9]/g,'');
+
+    if(digits.length < 3){ clear(); return; }
+
+    var pref = PREF[digits.slice(0,2)];
+    if(!pref){
+      if(shown === 'none') return;
+      shown = 'none';
+      reqId++;
+      result.className = 'pc-result on';
+      result.innerHTML = '<div class="pc-line" style="color:var(--tomato);font-weight:700;">その郵便番号は見つかりませんでした</div>';
+      return;
+    }
+
+    if(digits.length < 7){
+      var key = 'p:' + pref + ':' + digits.length;
+      if(shown === key) return;
+      shown = key;
+      reqId++;                                     /* 途中で消したら古い通信を無効化 */
+      renderPartial(pref, digits.length);
+      return;
+    }
+
+    var fullKey = 'f:' + digits;
+    if(shown === fullKey) return;
+    shown = fullKey;
+    fetchAddress(digits, pref);
+  }
+
+  /* 入力中の自動ハイフン＋ライブ判定 */
+  var timer = null;
+  input.addEventListener('input', function(){
+    var d = input.value.replace(/[^0-9]/g,'').slice(0,7);
+    input.value = d.length > 3 ? d.slice(0,3) + '-' + d.slice(3) : d;
+    clearTimeout(timer);
+    timer = setTimeout(judge, 220);
+  });
+  input.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ e.preventDefault(); clearTimeout(timer); judge(); input.blur(); }
+  });
+
+  /* スクロールで浮き上がり */
+  var els = document.querySelectorAll('.rise');
+  if(!('IntersectionObserver' in window) || location.protocol === 'file:'){
+    Array.prototype.forEach.call(els, function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold:0.06, rootMargin:'0px 0px -40px 0px' });
+    Array.prototype.forEach.call(els, function(el, i){
+      el.style.transitionDelay = (Math.min(i % 4, 3) * 70) + 'ms';
+      io.observe(el);
+    });
+    setTimeout(function(){
+      Array.prototype.forEach.call(els, function(el){ el.classList.add('in'); });
+    }, 3500);
+  }
+})();
 </script>
 </body>
 </html>
