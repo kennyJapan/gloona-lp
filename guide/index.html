@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>栽培カレンダー｜地域別の植え付け時期の目安 | GLOONA</title>
+<meta name="description" content="気象庁の平年値をもとにした、地域ごとの家庭菜園カレンダー。トマト・ナス・きゅうり・ほうれん草の植え付け時期の目安を、全国20都市分まとめています。">
+<meta name="color-scheme" content="light">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="/favicon-32.png">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{color-scheme:light;
+  --furrow:#2b5d34;--furrow-dark:#1e4325;--sprout:#6ba368;--sprout-pale:#e4efe1;
+  --soil:#6b4f34;--soil-pale:#e9dfcd;
+  --kraft:#f2ebdd;--paper:#fffdf7;
+  --tomato:#c2412d;--sky:#3d7a94;--sky-pale:#e2eef2;
+  --ink:#1b2a1d;--ink-mid:#4e5f50;--ink-soft:#7b8a7d;--rule:#d5cab3;
+}
+@media (prefers-color-scheme: dark){
+  :root{color-scheme:light;}
+  html,body{background:var(--kraft) !important;color:var(--ink) !important;}
+}
+body{
+  font-family:'Noto Sans JP','Hiragino Kaku Gothic ProN',YuGothic,Meiryo,sans-serif;
+  font-size:17px;line-height:1.9;color:var(--ink);background:var(--kraft);
+}
+h1,h2,h3{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;line-height:1.4;}
+.mono{font-family:'Roboto Mono',monospace;}
+a{color:inherit;}
+
+nav{
+  position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;background:rgba(242,235,221,.94);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--rule);
+}
+.brand-wrap{display:flex;flex-direction:column;align-items:center;text-decoration:none;}
+.brand{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;color:var(--furrow-dark);font-size:18px;text-decoration:none;}
+.brand-reading{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:10px;color:var(--furrow);letter-spacing:.1em;}
+.btn-line{
+  display:inline-flex;align-items:center;gap:8px;background:#06C755;color:#fff;
+  font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:14px;
+  padding:9px 18px;border-radius:8px;text-decoration:none;box-shadow:0 3px 0 #04a144;
+}
+
+main{max-width:720px;margin:0 auto;padding:0 24px 100px;}
+
+.crumbs{font-size:12.5px;color:var(--ink-soft);padding:16px 0 0;}
+.crumbs a{color:var(--furrow);text-decoration:none;}
+
+.pagehead{padding:20px 0 32px;}
+.pagehead .tag{
+  display:inline-block;font-size:12.5px;font-weight:700;color:var(--furrow);
+  background:var(--sprout-pale);border-radius:100px;padding:5px 14px;margin-bottom:14px;
+}
+.pagehead h1{font-size:clamp(1.6rem,5vw,2.1rem);color:var(--furrow-dark);margin-bottom:12px;}
+.pagehead .lede{font-size:1rem;color:var(--ink-mid);max-width:34em;}
+
+.climate-box{
+  background:var(--paper);border:1.5px solid var(--furrow);border-radius:14px;
+  padding:22px 22px 20px;margin:28px 0;
+}
+.climate-box h2{font-size:1.05rem;color:var(--furrow-dark);margin-bottom:10px;}
+.climate-box p{font-size:.94rem;color:var(--ink-mid);margin-bottom:14px;}
+.climate-box p b{
+  background-image:linear-gradient(rgba(194,65,45,.20), rgba(194,65,45,.20));
+  background-repeat:no-repeat;background-size:100% 38%;background-position:0 92%;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;
+  color:var(--ink);font-weight:700;
+}
+.climate-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;}
+.cstat{background:var(--sprout-pale);border-radius:9px;padding:12px 14px;}
+.cstat .k{font-size:11.5px;font-weight:700;color:var(--furrow);letter-spacing:.03em;}
+.cstat .v{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:1.15rem;color:var(--furrow-dark);margin-top:2px;}
+.cstat .s{font-size:11px;color:var(--ink-soft);margin-top:2px;}
+
+section.crop{padding:34px 0;border-top:1px solid var(--rule);}
+section.crop:first-of-type{border-top:none;}
+.crop-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.crop-ic{
+  width:44px;height:44px;border-radius:10px;background:var(--sprout-pale);
+  display:grid;place-items:center;font-size:21px;flex:0 0 auto;
+}
+.crop h2{font-size:1.2rem;color:var(--furrow-dark);}
+.crop .when{
+  display:inline-block;font-family:'Roboto Mono',monospace;font-weight:700;
+  background:var(--furrow-dark);color:var(--paper);border-radius:7px;
+  padding:6px 13px;font-size:.95rem;margin:8px 0 14px;
+}
+.crop p{font-size:.95rem;color:var(--ink-mid);margin-bottom:10px;}
+.crop .tip{
+  font-size:.86rem;color:var(--soil);background:var(--soil-pale);
+  border-radius:8px;padding:10px 13px;margin-top:10px;
+}
+
+.note{
+  font-size:.85rem;color:var(--ink-soft);background:var(--paper);border:1px solid var(--rule);
+  border-radius:10px;padding:16px 18px;margin:36px 0;line-height:1.8;
+}
+.note b{color:var(--ink-mid);}
+
+.cta{
+  background:var(--furrow-dark);color:var(--paper);border-radius:16px;
+  padding:30px 26px;text-align:center;margin:40px 0 20px;
+}
+.cta h3{font-size:1.25rem;margin-bottom:10px;}
+.cta p{font-size:.92rem;color:rgba(255,253,247,.78);max-width:28em;margin:0 auto 20px;}
+.cta .btn-line{font-size:1rem;padding:13px 26px;justify-content:center;}
+
+footer{text-align:center;padding:26px;font-size:12.5px;color:var(--ink-soft);border-top:1px solid var(--rule);}
+footer a{color:var(--furrow);text-decoration:none;margin:0 8px;}
+</style>
+
+<style>
+.city-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0 40px;}
+@media(min-width:520px){.city-grid{grid-template-columns:1fr 1fr 1fr;}}
+.city-card{
+  display:block;background:var(--paper);border:1px solid var(--rule);border-radius:11px;
+  padding:14px 16px;text-decoration:none;transition:box-shadow .15s,transform .15s;
+}
+.city-card:hover{box-shadow:0 4px 14px rgba(27,42,29,.08);transform:translateY(-1px);}
+.city-card .pref{font-size:11px;color:var(--ink-soft);}
+.city-card .name{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;color:var(--furrow-dark);font-size:1rem;margin:2px 0 6px;}
+.city-card .frostline{font-size:11.5px;color:var(--ink-mid);}
+.region-h{
+  font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:.95rem;
+  color:var(--furrow);margin:32px 0 4px;padding-bottom:6px;border-bottom:2px solid var(--sprout);
+}
+.region-h:first-of-type{margin-top:8px;}
+</style>
+
+</head>
+<body>
+
+<nav>
+  <a href="/" class="brand-wrap">
+    <span class="brand">GLOONA</span>
+    <span class="brand-reading">～ グローナ ～</span>
+  </a>
+  <a href="https://lin.ee/oi0lb7Z" class="btn-line">LINEで先行登録</a>
+</nav>
+
+<main>
+  <p class="crumbs"><a href="/">GLOONA</a> ／ 栽培カレンダー</p>
+
+  <header class="pagehead">
+    <span class="tag">全国20都市・気象庁データ準拠</span>
+    <h1>栽培カレンダー<br>地域別の植え付け時期</h1>
+    <p class="lede">
+      「中間地は5月〜」だけでは、実際の畑にはちょうどいい目安になりません。
+      気象庁の平年値をもとに、地域ごとの終霜・初霜と、トマト・ナス・きゅうり・
+      ほうれん草の植え付け目安をまとめました。お近くの地域を選んでください。
+    </p>
+  </header>
+
+  <p style="font-size:.82rem;color:var(--ink-soft);background:var(--paper);border:1px solid var(--rule);border-radius:9px;padding:11px 15px;margin-bottom:8px;">
+    これらのページは、栽培記録アプリ「GLOONA（グローナ）」の運営元が、気象庁のデータをもとに作成しています。
+  </p>
+
+  <h2 class="region-h">北海道・東北</h2>
+  <div class="city-grid">
+    <a href="/guide/sapporo/" class="city-card">
+      <div class="pref">北海道</div>
+      <div class="name">札幌市</div>
+      <div class="frostline">初霜 11月中旬</div>
+    </a>
+    <a href="/guide/morioka/" class="city-card">
+      <div class="pref">岩手県</div>
+      <div class="name">盛岡市</div>
+      <div class="frostline">初霜 11月中旬</div>
+    </a>
+    <a href="/guide/yamagata/" class="city-card">
+      <div class="pref">山形県</div>
+      <div class="name">山形市</div>
+      <div class="frostline">初霜 11月下旬</div>
+    </a>
+    <a href="/guide/sendai/" class="city-card">
+      <div class="pref">宮城県</div>
+      <div class="name">仙台市</div>
+      <div class="frostline">初霜 12月上旬</div>
+    </a>
+    <a href="/guide/fukushima/" class="city-card">
+      <div class="pref">福島県</div>
+      <div class="name">福島市</div>
+      <div class="frostline">初霜 12月上旬</div>
+    </a>
+  </div>
+
+  <h2 class="region-h">関東</h2>
+  <div class="city-grid">
+    <a href="/guide/maebashi/" class="city-card">
+      <div class="pref">群馬県</div>
+      <div class="name">前橋市</div>
+      <div class="frostline">初霜 12月中旬</div>
+    </a>
+    <a href="/guide/utsunomiya/" class="city-card">
+      <div class="pref">栃木県</div>
+      <div class="name">宇都宮市</div>
+      <div class="frostline">初霜 12月上旬</div>
+    </a>
+    <a href="/guide/tokyo23/" class="city-card">
+      <div class="pref">東京都</div>
+      <div class="name">東京23区</div>
+      <div class="frostline">初霜 12月下旬</div>
+    </a>
+    <a href="/guide/hachioji/" class="city-card">
+      <div class="pref">東京都</div>
+      <div class="name">八王子市</div>
+      <div class="frostline">初霜 12月上旬</div>
+    </a>
+  </div>
+
+  <h2 class="region-h">甲信越</h2>
+  <div class="city-grid">
+    <a href="/guide/kofu/" class="city-card">
+      <div class="pref">山梨県</div>
+      <div class="name">甲府市</div>
+      <div class="frostline">初霜 12月上旬</div>
+    </a>
+    <a href="/guide/matsumoto/" class="city-card">
+      <div class="pref">長野県</div>
+      <div class="name">松本市</div>
+      <div class="frostline">初霜 11月中旬</div>
+    </a>
+    <a href="/guide/saku/" class="city-card">
+      <div class="pref">長野県</div>
+      <div class="name">佐久市</div>
+      <div class="frostline">初霜 11月上旬</div>
+    </a>
+  </div>
+
+  <h2 class="region-h">東海・近畿</h2>
+  <div class="city-grid">
+    <a href="/guide/gifu/" class="city-card">
+      <div class="pref">岐阜県</div>
+      <div class="name">岐阜市</div>
+      <div class="frostline">初霜 12月中旬</div>
+    </a>
+    <a href="/guide/nagoya/" class="city-card">
+      <div class="pref">愛知県</div>
+      <div class="name">名古屋市</div>
+      <div class="frostline">初霜 12月下旬</div>
+    </a>
+    <a href="/guide/osaka/" class="city-card">
+      <div class="pref">大阪府</div>
+      <div class="name">大阪市</div>
+      <div class="frostline">初霜 1月下旬</div>
+    </a>
+    <a href="/guide/nara/" class="city-card">
+      <div class="pref">奈良県</div>
+      <div class="name">奈良市</div>
+      <div class="frostline">初霜 12月中旬</div>
+    </a>
+  </div>
+
+  <h2 class="region-h">中国・四国</h2>
+  <div class="city-grid">
+    <a href="/guide/tottori/" class="city-card">
+      <div class="pref">鳥取県</div>
+      <div class="name">鳥取市</div>
+      <div class="frostline">初霜 12月下旬</div>
+    </a>
+    <a href="/guide/matsuyama/" class="city-card">
+      <div class="pref">愛媛県</div>
+      <div class="name">松山市</div>
+      <div class="frostline">初霜 1月中旬</div>
+    </a>
+  </div>
+
+  <h2 class="region-h">九州</h2>
+  <div class="city-grid">
+    <a href="/guide/fukuoka/" class="city-card">
+      <div class="pref">福岡県</div>
+      <div class="name">福岡市</div>
+      <div class="frostline">霜のリスクは低い</div>
+    </a>
+    <a href="/guide/kurume/" class="city-card">
+      <div class="pref">福岡県</div>
+      <div class="name">久留米市</div>
+      <div class="frostline">初霜 12月下旬</div>
+    </a>
+  </div>
+
+
+  <div class="note">
+    <b>この一覧について</b><br>
+    掲載している時期は、気象庁の平年値(1991〜2020年の30年統計)をもとにした目安です。
+    実際の気温は年や場所によって前後します。天気予報の代わりではなく、
+    「大まかな計画を立てるための目安」としてお使いください。
+  </div>
+
+  <div class="cta">
+    <h3>自分の畑の記録は、自分の畑にしかない。</h3>
+    <p>
+      GLOONAは、郵便番号を入れるだけで、記録した日の天気が自動で残る
+      栽培記録アプリです。
+    </p>
+    <a href="https://lin.ee/oi0lb7Z" class="btn-line">LINEで先行登録する（無料）</a>
+  </div>
+</main>
+
+<footer>
+  <a href="/">トップ</a>
+  <a href="/privacy">プライバシーポリシー</a>
+</footer>
+
+</body>
+</html>
