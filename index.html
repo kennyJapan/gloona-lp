@@ -188,7 +188,21 @@ nav{
   content:'';position:absolute;left:-2px;right:-2px;bottom:2px;height:9px;
   background:rgba(194,65,45,.16);border-radius:2px;z-index:-1;
 }
-.hero-sub{font-size:1.05rem;color:var(--ink-mid);margin-bottom:30px;max-width:31em;}
+.hero-sub{font-size:1.05rem;color:var(--ink-mid);margin-bottom:16px;max-width:31em;}
+.hero-sub b{color:var(--furrow-dark);font-weight:700;}
+.hero-punch{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;
+  font-size:clamp(1.05rem,3.8vw,1.35rem);
+  color:var(--furrow-dark);
+  margin:0 auto 30px;
+}
+.hero-punch .ck-mark{width:20px;height:20px;flex:0 0 auto;}
+.hero-punch .hl2{position:relative;display:inline-block;}
+.hero-punch .hl2::after{
+  content:'';position:absolute;left:-2px;right:-2px;bottom:1px;height:9px;
+  background:rgba(194,65,45,.20);border-radius:2px;z-index:-1;
+}
 
 /* --- 署名要素：郵便番号デモ --- */
 .pc-demo{
@@ -412,6 +426,18 @@ section{padding:82px 0;}
 .why-stat .l{font-size:12.5px;color:var(--ink-mid);}
 
 /* ============ 機能 ============ */
+.feat-chips{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;}
+.feat-chip{
+  display:flex;align-items:center;gap:9px;
+  font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:.92rem;
+  background:var(--furrow-dark);color:var(--paper);
+  border-radius:9px;padding:11px 14px;
+}
+.feat-chip .ck-mark{width:19px;height:19px;flex:0 0 auto;}
+@media(max-width:480px){
+  .feat-chips{grid-template-columns:1fr 1fr;gap:8px;}
+  .feat-chip{font-size:.82rem;padding:10px 10px;}
+}
 .feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:16px;margin-top:30px;}
 .feat{
   background:var(--paper);border:1px solid var(--rule);border-radius:11px;
@@ -558,11 +584,14 @@ footer a:hover{color:var(--paper);}
   <div class="wrap hero-grid">
 
     <div class="hero-copy">
-      <h1>畑の記録に、<br><span class="hl">その土地の天気</span>を。</h1>
+      <h1>畑の記録に、<br><span class="hl">その土地の天気</span>を</h1>
       <p class="hero-sub">
-        郵便番号を入れるだけ。<br>
-        記録したその日の天気が、写真・メモと一緒に残る。<br>
-        「なぜ育つのか」に、記録で答える。
+        <b>郵便番号を入れるだけ。</b><br>
+        その日の天気を自動で取得。<br>写真・メモと一緒に保存。
+      </p>
+      <p class="hero-punch">
+        <svg class="ck-mark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 12.8c1.8 1.6 3.3 3.2 4.6 4.9C10.6 13.4 14.5 8 20 3.6" stroke="#2b5d34" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        「なぜ育つのか」に、<span class="hl2">記録で答える</span>
       </p>
 
       <!-- ── 署名要素：郵便番号デモ ── -->
@@ -658,7 +687,7 @@ footer a:hover{color:var(--paper);}
       </div>
     </div>
 
-    <p class="lede rise" style="margin-top:22px;">栽培記録アプリ「GLOONA」は、この繰り返しを終わらせるために作りました。</p>
+    <p class="lede rise" style="margin-top:24px;"><b>栽培記録アプリ「GLOONA」は、この繰り返しを終わらせるために作りました。</b></p>
   </div>
 </section>
 
@@ -667,7 +696,7 @@ footer a:hover{color:var(--paper);}
   <div class="wrap">
     <div class="why-inner">
       <span class="eyebrow rise">GLOONAが他と違うところ</span>
-      <h2 class="h2 rise">天気（自動記録）を写真、メモと紐づけ記録。<br>「その時の状態」を確実に残します。</h2>
+      <h2 class="h2 rise">写真・メモ・天気を、<br>まとめて記録。</h2>
       <p class="lede rise">
         今日の天気は、調べればわかる。去年の天気は、わからない。<br>
         明日の予報はスマホですぐ出ます。でも「去年の6月14日、うちの畑がどうだったか」は、
@@ -679,7 +708,7 @@ footer a:hover{color:var(--paper);}
         <div class="why-step rise">
           <div class="why-num">01</div>
           <div>
-            <h3>郵便番号だけで、畑の場所が決まる</h3>
+            <h3>郵便番号だけで、<br>畑の場所を登録</h3>
             <p>住所の入力も、地図のピン立ても不要。<br>郵便番号から市区町村と緯度経度を自動で引き当てます。<br>番地は聞きません。</p>
             <div class="why-stat">
               <span class="n">約11万</span>
@@ -691,8 +720,8 @@ footer a:hover{color:var(--paper);}
         <div class="why-step rise">
           <div class="why-num sky">02</div>
           <div>
-            <h3>記録した日の天気が、そのまま残る</h3>
-            <p>お住まいの市区町村単位で、気温と降水を毎日自動で取得・保存。<br>写真とメモ、天気記録が同じデータに集約されるため、「葉色が薄い」と「前日から連続降雨」が、来年そのまま並べて読めます。</p>
+            <h3>記録した日の天気が、<br>そのまま残る</h3>
+            <p>お住まいの市区町村単位で、気温と降水を毎日自動で取得・保存。<br>写真とメモ、天気記録が同じデータに集約されるため、「葉色が薄い」と「前日から連続降雨」が、来年にそのまま活かせます。</p>
             <p style="margin-top:8px;font-size:.86rem;color:var(--ink-soft);">天気予報そのものは、お使いの天気アプリのほうが正確です。GLOONAが引き受けるのは、過ぎた日の天気を残しておくほうの仕事です。</p>
           </div>
         </div>
@@ -722,8 +751,13 @@ footer a:hover{color:var(--paper);}
   <div class="wrap">
     <span class="eyebrow rise">できること</span>
     <h2 class="h2 rise">GLOONAでできること</h2>
-    <p class="lede rise">畑と区画の登録、観察記録、天気記録からAI観察ノートまで。<br>栽培に必要な全てを網羅。</p>
-    <p class="lede rise" style="margin-top:8px;">記録は、続かなければ意味がない。作業のあと、３０秒ですぐに記録できます。</p>
+    <div class="feat-chips rise">
+      <span class="feat-chip"><svg class="ck-mark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 12.8c1.8 1.6 3.3 3.2 4.6 4.9C10.6 13.4 14.5 8 20 3.6" stroke="#8CE05B" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>畑と区画の登録</span>
+      <span class="feat-chip"><svg class="ck-mark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 12.8c1.8 1.6 3.3 3.2 4.6 4.9C10.6 13.4 14.5 8 20 3.6" stroke="#8CE05B" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>天気を自動記録</span>
+      <span class="feat-chip"><svg class="ck-mark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 12.8c1.8 1.6 3.3 3.2 4.6 4.9C10.6 13.4 14.5 8 20 3.6" stroke="#8CE05B" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>観察記録</span>
+      <span class="feat-chip"><svg class="ck-mark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 12.8c1.8 1.6 3.3 3.2 4.6 4.9C10.6 13.4 14.5 8 20 3.6" stroke="#8CE05B" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>AI観察ノート</span>
+    </div>
+    <p class="lede rise" style="margin-top:14px;">栽培に必要な全てを網羅。<br>記録は、続かなければ意味がない。<br>作業のあと、３０秒ですぐに記録できます。</p>
 
     <div class="feat-grid">
       <div class="feat rise">
@@ -732,14 +766,14 @@ footer a:hover{color:var(--paper);}
         <p>「市民農園 A-12」「自宅の南側」のように畑を作り、その中に畝や区画を並べます。郵便番号から位置は自動入力。</p>
       </div>
       <div class="feat rise">
+        <div class="feat-ic">🌡️</div>
+        <h3>天気を自動で取得保存</h3>
+        <p>登録時の郵便番号にもとづき、市区町村単位の気温と降水を毎日自動で保存。記録画面に天気がそのまま載るので、入力の手間はありません。</p>
+      </div>
+      <div class="feat rise">
         <div class="feat-ic">📷</div>
         <h3>写真つき観察記録</h3>
         <p>写真とひとことで1件。作物・区画・日付・天気が全部ひもづいた状態で残ります。</p>
-      </div>
-      <div class="feat rise">
-        <div class="feat-ic">🌡️</div>
-        <h3>天気を自動で記録</h3>
-        <p>登録時の郵便番号にもとづき、市区町村単位の気温と降水を毎日自動で保存。記録画面に天気がそのまま載るので、入力する手間はありません。</p>
       </div>
       <div class="feat rise">
         <div class="feat-ic">🕐</div>
