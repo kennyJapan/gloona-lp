@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>札幌市で家庭菜園、いつ何を植える？栽培カレンダーの目安 | GLOONA</title>
+<meta name="description" content="札幌市は北海道の家庭菜園向け栽培カレンダー。トマト・ナス・きゅうり・ほうれん草を露地でいつ植えればいいか、気象庁の平年値をもとにした目安をまとめました。">
+<meta name="color-scheme" content="light">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="/favicon-32.png">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{color-scheme:light;
+  --furrow:#2b5d34;--furrow-dark:#1e4325;--sprout:#6ba368;--sprout-pale:#e4efe1;
+  --soil:#6b4f34;--soil-pale:#e9dfcd;
+  --kraft:#f2ebdd;--paper:#fffdf7;
+  --tomato:#c2412d;--sky:#3d7a94;--sky-pale:#e2eef2;
+  --ink:#1b2a1d;--ink-mid:#4e5f50;--ink-soft:#7b8a7d;--rule:#d5cab3;
+}
+@media (prefers-color-scheme: dark){
+  :root{color-scheme:light;}
+  html,body{background:var(--kraft) !important;color:var(--ink) !important;}
+}
+body{
+  font-family:'Noto Sans JP','Hiragino Kaku Gothic ProN',YuGothic,Meiryo,sans-serif;
+  font-size:17px;line-height:1.9;color:var(--ink);background:var(--kraft);
+}
+h1,h2,h3{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;line-height:1.4;}
+.mono{font-family:'Roboto Mono',monospace;}
+a{color:inherit;}
+
+nav{
+  position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;background:rgba(242,235,221,.94);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--rule);
+}
+.brand-wrap{display:flex;flex-direction:column;align-items:center;text-decoration:none;}
+.brand{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;color:var(--furrow-dark);font-size:18px;text-decoration:none;}
+.brand-reading{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:10px;color:var(--furrow);letter-spacing:.1em;}
+.btn-line{
+  display:inline-flex;align-items:center;gap:8px;background:#06C755;color:#fff;
+  font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:14px;
+  padding:9px 18px;border-radius:8px;text-decoration:none;box-shadow:0 3px 0 #04a144;
+}
+
+main{max-width:720px;margin:0 auto;padding:0 24px 100px;}
+
+.crumbs{font-size:12.5px;color:var(--ink-soft);padding:16px 0 0;}
+.crumbs a{color:var(--furrow);text-decoration:none;}
+
+.pagehead{padding:20px 0 32px;}
+.pagehead .tag{
+  display:inline-block;font-size:12.5px;font-weight:700;color:var(--furrow);
+  background:var(--sprout-pale);border-radius:100px;padding:5px 14px;margin-bottom:14px;
+}
+.pagehead h1{font-size:clamp(1.6rem,5vw,2.1rem);color:var(--furrow-dark);margin-bottom:12px;}
+.pagehead .lede{font-size:1rem;color:var(--ink-mid);max-width:34em;}
+
+.climate-box{
+  background:var(--paper);border:1.5px solid var(--furrow);border-radius:14px;
+  padding:22px 22px 20px;margin:28px 0;
+}
+.climate-box h2{font-size:1.05rem;color:var(--furrow-dark);margin-bottom:10px;}
+.climate-box p{font-size:.94rem;color:var(--ink-mid);margin-bottom:14px;}
+.climate-box p b{
+  background-image:linear-gradient(rgba(194,65,45,.20), rgba(194,65,45,.20));
+  background-repeat:no-repeat;background-size:100% 38%;background-position:0 92%;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;
+  color:var(--ink);font-weight:700;
+}
+.climate-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;}
+.cstat{background:var(--sprout-pale);border-radius:9px;padding:12px 14px;}
+.cstat .k{font-size:11.5px;font-weight:700;color:var(--furrow);letter-spacing:.03em;}
+.cstat .v{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:1.15rem;color:var(--furrow-dark);margin-top:2px;}
+.cstat .s{font-size:11px;color:var(--ink-soft);margin-top:2px;}
+
+section.crop{padding:34px 0;border-top:1px solid var(--rule);}
+section.crop:first-of-type{border-top:none;}
+.crop-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.crop-ic{
+  width:44px;height:44px;border-radius:10px;background:var(--sprout-pale);
+  display:grid;place-items:center;font-size:21px;flex:0 0 auto;
+}
+.crop h2{font-size:1.2rem;color:var(--furrow-dark);}
+.crop .when{
+  display:inline-block;font-family:'Roboto Mono',monospace;font-weight:700;
+  background:var(--furrow-dark);color:var(--paper);border-radius:7px;
+  padding:6px 13px;font-size:.95rem;margin:8px 0 14px;
+}
+.crop p{font-size:.95rem;color:var(--ink-mid);margin-bottom:10px;}
+.crop .tip{
+  font-size:.86rem;color:var(--soil);background:var(--soil-pale);
+  border-radius:8px;padding:10px 13px;margin-top:10px;
+}
+
+.note{
+  font-size:.85rem;color:var(--ink-soft);background:var(--paper);border:1px solid var(--rule);
+  border-radius:10px;padding:16px 18px;margin:36px 0;line-height:1.8;
+}
+.note b{color:var(--ink-mid);}
+
+.cta{
+  background:var(--furrow-dark);color:var(--paper);border-radius:16px;
+  padding:30px 26px;text-align:center;margin:40px 0 20px;
+}
+.cta h3{font-size:1.25rem;margin-bottom:10px;}
+.cta p{font-size:.92rem;color:rgba(255,253,247,.78);max-width:28em;margin:0 auto 20px;}
+.cta .btn-line{font-size:1rem;padding:13px 26px;justify-content:center;}
+
+footer{text-align:center;padding:26px;font-size:12.5px;color:var(--ink-soft);border-top:1px solid var(--rule);}
+footer a{color:var(--furrow);text-decoration:none;margin:0 8px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="brand-wrap">
+    <span class="brand">GLOONA</span>
+    <span class="brand-reading">～ グローナ ～</span>
+  </a>
+  <a href="https://lin.ee/oi0lb7Z" class="btn-line">LINEで先行登録</a>
+</nav>
+
+<main>
+  <p class="crumbs"><a href="/">GLOONA</a> ／ <a href="/guide/">栽培カレンダー</a> ／ 札幌市</p>
+
+  <header class="pagehead">
+    <span class="tag">北海道 札幌市</span>
+    <h1>札幌市で家庭菜園、<br>いつ何を植える？</h1>
+    <p class="lede">
+      種袋の裏や園芸書には「中間地は5月上旬から」としか書いてありません。でも札幌市のような土地は、地形や気候の影響で近隣の地域と時期がずれることがあります。ここでは気象庁の平年値をもとに、この地域の気候に合わせた目安をまとめました。
+    </p>
+  </header>
+
+  <p style="font-size:.82rem;color:var(--ink-soft);background:var(--paper);border:1px solid var(--rule);border-radius:9px;padding:11px 15px;margin-bottom:28px;">
+    この記事は、栽培記録アプリ「GLOONA（グローナ）」の運営元が、気象庁のデータをもとに作成しています。
+  </p>
+
+  <div class="climate-box">
+    <h2>札幌市の気候の特徴</h2>
+    <p>
+      札幌市は内陸性の影響を受け、年間の寒暖差が大きい地域です。冬の寒さが厳しいだけでなく、春になっても夜間の低温が長く残ります。そのため夏野菜の露地栽培は本州の主要都市よりスタートが遅く、短い暖候期を上手に使うことが重要です。平年値では初霜の目安が11月中旬、終霜が4月上旬、霜リスク期間は<b>約15旬（150日ほど）</b>です。
+    </p>
+    <div class="climate-stats">
+      <div class="cstat">
+        <div class="k">初霜の目安</div>
+        <div class="v">11月中旬</div>
+        <div class="s">この頃から霜の可能性が出てきます</div>
+      </div>
+      <div class="cstat">
+        <div class="k">終霜の目安</div>
+        <div class="v">4月上旬</div>
+        <div class="s">この頃を過ぎると霜の心配は減ります</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="crop">
+    <div class="crop-head">
+      <div class="crop-ic">🍅</div>
+      <h2>トマト</h2>
+    </div>
+    <span class="when">定植の目安：6月上旬〜</span>
+    <p>
+      札幌市では最低気温12℃を基準にすると、トマトの定植目安は6月上旬です。終霜後もすぐには十分な気温にならないため、暖かくなるまで待つ必要があります。
+    </p>
+    <p class="tip">💡 北海道では透明マルチや簡易的な保温資材を使って地温を確保すると、定植直後の生育を助けられます。</p>
+  </section>
+
+  <section class="crop">
+    <div class="crop-head">
+      <div class="crop-ic">🍆</div>
+      <h2>ナス</h2>
+    </div>
+    <span class="when">定植の目安：7月上旬〜</span>
+    <p>
+      ナスは最低気温15℃以上を必要とするため、札幌市では7月上旬が目安です。栽培できる暖かい期間が限られるため、苗からスタートするのが扱いやすい方法です。
+    </p>
+    <p class="tip">💡 日当たりのよい場所を優先し、地温を下げない工夫をすると限られた夏を有効に使えます。</p>
+  </section>
+
+  <section class="crop">
+    <div class="crop-head">
+      <div class="crop-ic">🥒</div>
+      <h2>きゅうり</h2>
+    </div>
+    <span class="when">定植の目安：7月上旬〜</span>
+    <p>
+      きゅうりも最低気温15℃を基準にすると7月上旬が定植目安です。気温が条件を満たしてからは成長が速いため、北海道の夏でも十分に収穫を狙えます。
+    </p>
+    <p class="tip">💡 短期間で収穫まで進めるため、定植時点で根がしっかり張った元気な苗を選びましょう。</p>
+  </section>
+
+  <section class="crop">
+    <div class="crop-head">
+      <div class="crop-ic">🥬</div>
+      <h2>ほうれん草</h2>
+    </div>
+    <span class="when">種まきの目安：10月上旬ごろ</span>
+    <p>
+      札幌市では寒さに強いほうれん草と地域の気候との相性は良好です。初霜の目安となる11月中旬の1ヶ月半ほど前、10月上旬ごろまでにまいておくと、厳しい寒さが来る前に株を育てられます。
+    </p>
+    <p class="tip">💡 秋まきだけでなく、雪解け後の春まきも選択肢になります。暑さに弱い作物なので、涼しい時期を積極的に活用しましょう。</p>
+  </section>
+
+  <div class="note">
+    <b>この目安について</b><br>
+    このページの時期は、気象庁の平年値(1991〜2020年の30年統計)をもとにした目安です。
+    実際の気温は年によって前後しますし、札幌市内でも標高や場所によって差があります。
+    天気予報の代わりではなく、「大まかな計画を立てるための目安」としてお使いください。
+  </div>
+
+  <div class="cta">
+    <h3>自分の畑の記録は、自分の畑にしかない。</h3>
+    <p>
+      GLOONAは、郵便番号を入れるだけで、記録した日の天気が自動で残る
+      栽培記録アプリです。今年の札幌市の畑がどうだったか、来年の自分に残せます。
+    </p>
+    <a href="https://lin.ee/oi0lb7Z" class="btn-line">LINEで先行登録する（無料）</a>
+  </div>
+</main>
+
+<footer>
+  <a href="/">トップ</a>
+  <a href="/guide/">他の地域を見る</a>
+  <a href="/privacy">プライバシーポリシー</a>
+</footer>
+
+</body>
+</html>

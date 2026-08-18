@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>名古屋市で家庭菜園、いつ何を植える？栽培カレンダーの目安 | GLOONA</title>
+<meta name="description" content="名古屋市は愛知県の家庭菜園向け栽培カレンダー。トマト・ナス・きゅうり・ほうれん草を露地でいつ植えればいいか、気象庁の平年値をもとにした目安をまとめました。">
+<meta name="color-scheme" content="light">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="/favicon-32.png">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{color-scheme:light;
+  --furrow:#2b5d34;--furrow-dark:#1e4325;--sprout:#6ba368;--sprout-pale:#e4efe1;
+  --soil:#6b4f34;--soil-pale:#e9dfcd;
+  --kraft:#f2ebdd;--paper:#fffdf7;
+  --tomato:#c2412d;--sky:#3d7a94;--sky-pale:#e2eef2;
+  --ink:#1b2a1d;--ink-mid:#4e5f50;--ink-soft:#7b8a7d;--rule:#d5cab3;
+}
+@media (prefers-color-scheme: dark){
+  :root{color-scheme:light;}
+  html,body{background:var(--kraft) !important;color:var(--ink) !important;}
+}
+body{
+  font-family:'Noto Sans JP','Hiragino Kaku Gothic ProN',YuGothic,Meiryo,sans-serif;
+  font-size:17px;line-height:1.9;color:var(--ink);background:var(--kraft);
+}
+h1,h2,h3{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;line-height:1.4;}
+.mono{font-family:'Roboto Mono',monospace;}
+a{color:inherit;}
+
+nav{
+  position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;background:rgba(242,235,221,.94);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--rule);
+}
+.brand-wrap{display:flex;flex-direction:column;align-items:center;text-decoration:none;}
+.brand{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;color:var(--furrow-dark);font-size:18px;text-decoration:none;}
+.brand-reading{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:10px;color:var(--furrow);letter-spacing:.1em;}
+.btn-line{
+  display:inline-flex;align-items:center;gap:8px;background:#06C755;color:#fff;
+  font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:14px;
+  padding:9px 18px;border-radius:8px;text-decoration:none;box-shadow:0 3px 0 #04a144;
+}
+
+main{max-width:720px;margin:0 auto;padding:0 24px 100px;}
+
+.crumbs{font-size:12.5px;color:var(--ink-soft);padding:16px 0 0;}
+.crumbs a{color:var(--furrow);text-decoration:none;}
+
+.pagehead{padding:20px 0 32px;}
+.pagehead .tag{
+  display:inline-block;font-size:12.5px;font-weight:700;color:var(--furrow);
+  background:var(--sprout-pale);border-radius:100px;padding:5px 14px;margin-bottom:14px;
+}
+.pagehead h1{font-size:clamp(1.6rem,5vw,2.1rem);color:var(--furrow-dark);margin-bottom:12px;}
+.pagehead .lede{font-size:1rem;color:var(--ink-mid);max-width:34em;}
+
+.climate-box{
+  background:var(--paper);border:1.5px solid var(--furrow);border-radius:14px;
+  padding:22px 22px 20px;margin:28px 0;
+}
+.climate-box h2{font-size:1.05rem;color:var(--furrow-dark);margin-bottom:10px;}
+.climate-box p{font-size:.94rem;color:var(--ink-mid);margin-bottom:14px;}
+.climate-box p b{
+  background-image:linear-gradient(rgba(194,65,45,.20), rgba(194,65,45,.20));
+  background-repeat:no-repeat;background-size:100% 38%;background-position:0 92%;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;
+  color:var(--ink);font-weight:700;
+}
+.climate-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;}
+.cstat{background:var(--sprout-pale);border-radius:9px;padding:12px 14px;}
+.cstat .k{font-size:11.5px;font-weight:700;color:var(--furrow);letter-spacing:.03em;}
+.cstat .v{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:1.15rem;color:var(--furrow-dark);margin-top:2px;}
+.cstat .s{font-size:11px;color:var(--ink-soft);margin-top:2px;}
+
+section.crop{padding:34px 0;border-top:1px solid var(--rule);}
+section.crop:first-of-type{border-top:none;}
+.crop-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.crop-ic{
+  width:44px;height:44px;border-radius:10px;background:var(--sprout-pale);
+  display:grid;place-items:center;font-size:21px;flex:0 0 auto;
+}
+.crop h2{font-size:1.2rem;color:var(--furrow-dark);}
+.crop .when{
+  display:inline-block;font-family:'Roboto Mono',monospace;font-weight:700;
+  background:var(--furrow-dark);color:var(--paper);border-radius:7px;
+  padding:6px 13px;font-size:.95rem;margin:8px 0 14px;
+}
+.crop p{font-size:.95rem;color:var(--ink-mid);margin-bottom:10px;}
+.crop .tip{
+  font-size:.86rem;color:var(--soil);background:var(--soil-pale);
+  border-radius:8px;padding:10px 13px;margin-top:10px;
+}
+
+.note{
+  font-size:.85rem;color:var(--ink-soft);background:var(--paper);border:1px solid var(--rule);
+  border-radius:10px;padding:16px 18px;margin:36px 0;line-height:1.8;
+}
+.note b{color:var(--ink-mid);}
+
+.cta{
+  background:var(--furrow-dark);color:var(--paper);border-radius:16px;
+  padding:30px 26px;text-align:center;margin:40px 0 20px;
+}
+.cta h3{font-size:1.25rem;margin-bottom:10px;}
+.cta p{font-size:.92rem;color:rgba(255,253,247,.78);max-width:28em;margin:0 auto 20px;}
+.cta .btn-line{font-size:1rem;padding:13px 26px;justify-content:center;}
+
+footer{text-align:center;padding:26px;font-size:12.5px;color:var(--ink-soft);border-top:1px solid var(--rule);}
+footer a{color:var(--furrow);text-decoration:none;margin:0 8px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="brand-wrap">
+    <span class="brand">GLOONA</span>
+    <span class="brand-reading">～ グローナ ～</span>
+  </a>
+  <a href="https://lin.ee/oi0lb7Z" class="btn-line">LINEで先行登録</a>
+</nav>
+
+<main>
+  <p class="crumbs"><a href="/">GLOONA</a> ／ <a href="/guide/">栽培カレンダー</a> ／ 名古屋市</p>
+
+  <header class="pagehead">
+    <span class="tag">愛知県 名古屋市</span>
+    <h1>名古屋市で家庭菜園、<br>いつ何を植える？</h1>
+    <p class="lede">
+      種袋の裏や園芸書には「中間地は5月上旬から」としか書いてありません。でも名古屋市のような土地は、地形や気候の影響で近隣の地域と時期がずれることがあります。ここでは気象庁の平年値をもとに、この地域の気候に合わせた目安をまとめました。
+    </p>
+  </header>
+
+  <p style="font-size:.82rem;color:var(--ink-soft);background:var(--paper);border:1px solid var(--rule);border-radius:9px;padding:11px 15px;margin-bottom:28px;">
+    この記事は、栽培記録アプリ「GLOONA（グローナ）」の運営元が、気象庁のデータをもとに作成しています。
+  </p>
+
+  <div class="climate-box">
+    <h2>名古屋市の気候の特徴</h2>
+    <p>
+      名古屋市は内陸性の特徴があり、夏は猛暑になる一方で冬の朝は意外と冷え込みます。夏野菜には十分な高温が得られますが、春先は遅い冷え込みを意識して植え付け時期を決めたい地域です。夏は高温そのものへの対策も栽培の重要なポイントになります。平年値では初霜の目安が12月下旬、終霜が2月下旬、霜リスク期間は<b>約7旬（70日ほど）</b>です。
+    </p>
+    <div class="climate-stats">
+      <div class="cstat">
+        <div class="k">初霜の目安</div>
+        <div class="v">12月下旬</div>
+        <div class="s">この頃から霜の可能性が出てきます</div>
+      </div>
+      <div class="cstat">
+        <div class="k">終霜の目安</div>
+        <div class="v">2月下旬</div>
+        <div class="s">この頃を過ぎると霜の心配は減ります</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="crop">
+    <div class="crop-head">
+      <div class="crop-ic">🍅</div>
+      <h2>トマト</h2>
+    </div>
+    <span class="when">定植の目安：5月上旬〜</span>
+    <p>
+      名古屋市のトマト定植目安は5月上旬です。最低気温12℃を超える頃から植え付ければ、春の低温を避けながら夏までの生育期間を十分確保できます。
+    </p>
+    <p class="tip">💡 盛夏は高温で実付きが悪くなることもあります。真夏になる前に株を充実させておくことがポイントです。</p>
+  </section>
+
+  <section class="crop">
+    <div class="crop-head">
+      <div class="crop-ic">🍆</div>
+      <h2>ナス</h2>
+    </div>
+    <span class="when">定植の目安：5月下旬〜</span>
+    <p>
+      ナスの定植は最低気温15℃が目安で、名古屋市では5月下旬です。暑さを好むナスにとって、その後の名古屋の気候は生育しやすい環境になります。
+    </p>
+    <p class="tip">💡 真夏は水切れしやすいため、敷きわらなどで土の乾燥を抑えると管理が楽になります。</p>
+  </section>
+
+  <section class="crop">
+    <div class="crop-head">
+      <div class="crop-ic">🥒</div>
+      <h2>きゅうり</h2>
+    </div>
+    <span class="when">定植の目安：5月下旬〜</span>
+    <p>
+      きゅうりも5月下旬が定植目安です。気温が十分に上がる時期なので、その後は短期間でつるを伸ばして収穫期に入ります。
+    </p>
+    <p class="tip">💡 猛暑期は株が疲れやすいため、一度に植えず時期をずらして苗を追加する方法もおすすめです。</p>
+  </section>
+
+  <section class="crop">
+    <div class="crop-head">
+      <div class="crop-ic">🥬</div>
+      <h2>ほうれん草</h2>
+    </div>
+    <span class="when">種まきの目安：11月上旬ごろ</span>
+    <p>
+      名古屋市では夏の暑さを避けた秋まきが基本です。初霜の目安となる12月下旬の1ヶ月半ほど前、11月上旬から中旬を目安に種をまくと育てやすくなります。
+    </p>
+    <p class="tip">💡 暑さが残る年は発芽しにくいことがあります。気温が落ち着いたタイミングを選んでまきましょう。</p>
+  </section>
+
+  <div class="note">
+    <b>この目安について</b><br>
+    このページの時期は、気象庁の平年値(1991〜2020年の30年統計)をもとにした目安です。
+    実際の気温は年によって前後しますし、名古屋市内でも標高や場所によって差があります。
+    天気予報の代わりではなく、「大まかな計画を立てるための目安」としてお使いください。
+  </div>
+
+  <div class="cta">
+    <h3>自分の畑の記録は、自分の畑にしかない。</h3>
+    <p>
+      GLOONAは、郵便番号を入れるだけで、記録した日の天気が自動で残る
+      栽培記録アプリです。今年の名古屋市の畑がどうだったか、来年の自分に残せます。
+    </p>
+    <a href="https://lin.ee/oi0lb7Z" class="btn-line">LINEで先行登録する（無料）</a>
+  </div>
+</main>
+
+<footer>
+  <a href="/">トップ</a>
+  <a href="/guide/">他の地域を見る</a>
+  <a href="/privacy">プライバシーポリシー</a>
+</footer>
+
+</body>
+</html>
