@@ -132,7 +132,7 @@ nav{
 /* ============ HERO ============ */
 .hero{
   position:relative;overflow:hidden;
-  padding:72px 0 84px;
+  padding:0 0 84px;
   background:
     radial-gradient(900px 420px at 82% -10%, rgba(107,163,104,.20), transparent 62%),
     var(--kraft);
@@ -152,30 +152,30 @@ nav{
 .hero-grid{
   position:relative;z-index:1;
   display:grid;grid-template-columns:1fr;gap:44px;align-items:center;
-  max-width:640px;margin:0 auto;
+  max-width:640px;margin:0 auto;padding-top:44px;
 }
 .hero-copy{text-align:center;}
 .hero-copy .hero-sub{margin-left:auto;margin-right:auto;}
 
-.hero-badge{
-  display:inline-block;
-  font-size:12.5px;font-weight:700;letter-spacing:.06em;
-  color:var(--soil);background:var(--soil-pale);
-  border:1px solid #d8c9ac;border-radius:16px;
-  padding:8px 18px;margin-bottom:20px;
-  text-align:center;line-height:1.6;
+.hero-topband{
+  width:100%;
+  background:var(--furrow-dark);color:var(--paper);
+  text-align:center;font-weight:700;
+  font-size:clamp(1rem,3.6vw,1.2rem);
+  line-height:1.55;
+  padding:16px 20px 18px;
 }
-.hero-release{
+.hero-topband .tb-brand{
+  text-decoration:underline;text-decoration-color:var(--tomato);
+  text-decoration-thickness:3px;text-underline-offset:5px;
+  font-weight:900;letter-spacing:.02em;
+}
+.tb-release{
   display:flex;align-items:center;justify-content:center;gap:8px;
-  font-size:14px;font-weight:700;color:var(--paper);
-  background:var(--furrow);border-radius:100px;
-  padding:8px 18px;margin:0 auto 18px;width:fit-content;
-  max-width:100%;white-space:nowrap;
+  font-size:clamp(1.15rem,4.4vw,1.4rem);font-weight:900;
+  color:var(--paper);margin-top:12px;padding-top:12px;
+  border-top:1px solid rgba(255,253,247,.22);
 }
-@media(max-width:360px){
-  .hero-release{font-size:12.5px;padding:7px 13px;gap:6px;}
-}
-.hero-release .dot2{width:6px;height:6px;border-radius:50%;background:var(--tomato);flex:0 0 auto;}
 .hero h1{
   font-size:clamp(2.05rem,6.2vw,3.25rem);
   color:var(--furrow-dark);
@@ -377,8 +377,9 @@ section{padding:82px 0;}
   background-size:26px 26px;
   border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
 }
-.why-inner{background:rgba(255,253,247,.86);border-radius:16px;padding:36px 28px;}
-@media(max-width:640px){.why-inner{padding:28px 20px;}}
+.why .wrap{padding:0;}
+.why-inner{background:rgba(255,253,247,.86);border-radius:16px;padding:36px 24px;}
+@media(max-width:640px){.why-inner{padding:28px 24px;}}
 .why-steps{display:flex;flex-direction:column;gap:0;margin-top:30px;}
 .why-step{
   display:grid;grid-template-columns:52px 1fr;gap:18px;
@@ -532,7 +533,7 @@ footer a:hover{color:var(--paper);}
 @media(max-width:640px){
   section{padding:58px 0;}
   .logcard{transform:none;}
-  .hero{padding:48px 0 62px;}
+  .hero{padding:0 0 62px;}
 }
 </style>
 </head>
@@ -549,15 +550,19 @@ footer a:hover{color:var(--paper);}
 
 <!-- ══════════ HERO ══════════ -->
 <header class="hero" id="top">
+  <div class="hero-topband">
+    栽培記録アプリ <span class="tb-brand">GLOONA（グローナ）</span><br>
+    家庭菜園・市民農園むけ
+    <div class="tb-release">2026年10月、リリース予定</div>
+  </div>
   <div class="wrap hero-grid">
 
     <div class="hero-copy">
-      <span class="hero-badge">栽培記録アプリ GLOONA（グローナ）<br>家庭菜園・市民農園むけ</span>
-      <div class="hero-release"><span class="dot2"></span>2026年10月、リリース予定</div>
       <h1>畑の記録に、<br><span class="hl">その土地の天気</span>を。</h1>
       <p class="hero-sub">
-        郵便番号を入れるだけ。<br>記録をつけたその日の天気が、写真とメモと一緒に残ります。
-        「なぜ育ったか」が、来年の答えになる。
+        郵便番号を入れるだけ。<br>
+        記録したその日の天気が、写真・メモと一緒に残る。<br>
+        「なぜ育つのか」に、記録で答える。
       </p>
 
       <!-- ── 署名要素：郵便番号デモ ── -->
@@ -571,16 +576,13 @@ footer a:hover{color:var(--paper);}
           </label>
         </div>
         <div class="pc-result" id="zipResult" role="status" aria-live="polite"></div>
-        <p class="pc-note">番地は聞きません。エリアの特定と気象データの取得にだけ使います。</p>
+        <p class="pc-note">番地は聞きません。<br>エリアの特定と気象データの取得にだけ使います。</p>
       </div>
 
       <div class="hero-cta">
         <a href="https://lin.ee/oi0lb7Z" class="btn btn-line" id="heroCta">LINEで先行登録する（無料）</a>
         <p class="hero-cta-note">
           いま先行登録された方は、Plusを<b>3ヶ月無料</b>でお使いいただけます。
-        </p>
-        <p class="hero-secondary">
-          今すぐ触りたい方は <a href="https://gloona.vercel.app">Web版（ベータ）</a> からどうぞ。
         </p>
       </div>
     </div>
@@ -617,7 +619,8 @@ footer a:hover{color:var(--paper);}
         </div>
       </figure>
       <p class="logcard-caption">
-        記録画面のイメージ。天気の自動記録は今すぐ使えます。<br>
+        ※記録画面イメージ<br>
+        天気の自動記録は登録直後から使えます。<br>
         前年比較とAIアドバイスはPlus向けに開発中です。
       </p>
     </div>
@@ -633,10 +636,8 @@ footer a:hover{color:var(--paper);}
 
     <div class="pain-quotes rise">
       <p class="pain-q"><span class="q">“</span>去年いつ種をまいたか、もう思い出せない</p>
-      <p class="pain-q"><span class="q">“</span>枯れた原因が、低温なのか水切れなのか分からないまま</p>
+      <p class="pain-q"><span class="q">“</span>枯れた原因が、低温なのか水切れなのか分からない</p>
     </div>
-
-    <p class="lede rise" style="margin-bottom:6px;">栽培記録アプリ「GLOONA」は、この繰り返しを終わらせるために作りました。</p>
 
     <div class="pain-grid">
       <div class="pain-card rise">
@@ -645,17 +646,19 @@ footer a:hover{color:var(--paper);}
       </div>
       <div class="pain-card rise">
         <h3>天気とつながっていない</h3>
-        <p>記録した日がどんな天気だったかは、あとから調べ直せません。気温も雨量も残っていないと、原因の切り分けができない。</p>
+        <p>記録した日がどんな天気だったかは、あとから調べ直せません。気温も雨量も残っていないと、原因の切り分けが困難に。</p>
       </div>
       <div class="pain-card rise">
         <h3>区画がごちゃつく</h3>
-        <p>複数の畝で複数の品種を回していると、紙のノートでは追えなくなる。連作を避けたいのに、去年どこに何を植えたかが曖昧に。</p>
+        <p>複数の畝で複数の品種を回していると、紙のノートでは追えなくなりがち。連作を避けたいのに、去年どこに何を植えたかが曖昧に。</p>
       </div>
       <div class="pain-card rise">
         <h3>写真がカメラロールに埋もれる</h3>
-        <p>撮るだけは撮っている。でも作物と日付にひもづいていないので、比較にも相談にも使えないまま流れていく。</p>
+        <p>写真は一応撮っているものの、スマホのアルバムに埋もれていくだけ。<br>あとからの見返しや分析も困難に。</p>
       </div>
     </div>
+
+    <p class="lede rise" style="margin-top:22px;">栽培記録アプリ「GLOONA」は、この繰り返しを終わらせるために作りました。</p>
   </div>
 </section>
 
@@ -664,8 +667,9 @@ footer a:hover{color:var(--paper);}
   <div class="wrap">
     <div class="why-inner">
       <span class="eyebrow rise">GLOONAが他と違うところ</span>
-      <h2 class="h2 rise">今日の天気は、調べればわかる。<br>去年の天気は、誰も教えてくれない。</h2>
+      <h2 class="h2 rise">天気（自動記録）を写真、メモと紐づけ記録。<br>「その時の状態」を確実に残します。</h2>
       <p class="lede rise">
+        今日の天気は、調べればわかる。去年の天気は、わからない。<br>
         明日の予報はスマホですぐ出ます。でも「去年の6月14日、うちの畑がどうだったか」は、
         どこにも残っていません。GLOONAは記録をつけたその日の天気を一緒に保存して、
         何年経っても引き出せるようにします。
@@ -676,7 +680,7 @@ footer a:hover{color:var(--paper);}
           <div class="why-num">01</div>
           <div>
             <h3>郵便番号だけで、畑の場所が決まる</h3>
-            <p>住所の入力も、地図のピン立ても不要。郵便番号から市区町村と緯度経度を自動で引き当てます。番地は聞きません。</p>
+            <p>住所の入力も、地図のピン立ても不要。<br>郵便番号から市区町村と緯度経度を自動で引き当てます。<br>番地は聞きません。</p>
             <div class="why-stat">
               <span class="n">約11万</span>
               <span class="l">全国の郵便番号区画を独自にポリゴン化。場所の特定に使っています</span>
@@ -688,7 +692,7 @@ footer a:hover{color:var(--paper);}
           <div class="why-num sky">02</div>
           <div>
             <h3>記録した日の天気が、そのまま残る</h3>
-            <p>お住まいの市区町村単位で、気温と降水を毎日自動で取得して保存します。写真とメモと天気が同じ1件に入っているので、「葉色が薄い」と「前日から連続降雨」が、来年そのまま並べて読めます。</p>
+            <p>お住まいの市区町村単位で、気温と降水を毎日自動で取得・保存。<br>写真とメモ、天気記録が同じデータに集約されるため、「葉色が薄い」と「前日から連続降雨」が、来年そのまま並べて読めます。</p>
             <p style="margin-top:8px;font-size:.86rem;color:var(--ink-soft);">天気予報そのものは、お使いの天気アプリのほうが正確です。GLOONAが引き受けるのは、過ぎた日の天気を残しておくほうの仕事です。</p>
           </div>
         </div>
@@ -718,7 +722,8 @@ footer a:hover{color:var(--paper);}
   <div class="wrap">
     <span class="eyebrow rise">できること</span>
     <h2 class="h2 rise">GLOONAでできること</h2>
-    <p class="lede rise">記録は、続かなければ意味がない。作業のあと、泥のついた手でも30秒で終わる設計にしています。</p>
+    <p class="lede rise">畑と区画の登録、観察記録、天気記録からAI観察ノートまで。<br>栽培に必要な全てを網羅。</p>
+    <p class="lede rise" style="margin-top:8px;">記録は、続かなければ意味がない。作業のあと、３０秒ですぐに記録できます。</p>
 
     <div class="feat-grid">
       <div class="feat rise">
@@ -733,18 +738,18 @@ footer a:hover{color:var(--paper);}
       </div>
       <div class="feat rise">
         <div class="feat-ic">🌡️</div>
-        <h3>天気は書かなくていい</h3>
-        <p>市区町村単位の気温と降水を毎日自動で保存。記録画面に天気がそのまま載るので、入力する手間はありません。</p>
+        <h3>天気を自動で記録</h3>
+        <p>登録時の郵便番号にもとづき、市区町村単位の気温と降水を毎日自動で保存。記録画面に天気がそのまま載るので、入力する手間はありません。</p>
+      </div>
+      <div class="feat rise">
+        <div class="feat-ic">🕐</div>
+        <h3>栽培記録のふりかえり</h3>
+        <p>同じ区画・同じ作物の記録を時系列で並べて比較。年をまたぐほど価値が出ます。</p>
       </div>
       <div class="feat rise">
         <div class="feat-ic">📖</div>
         <h3>AI観察ノート</h3>
         <p>ためた記録と天気から、その作物の経過をまとめた振り返りノートを生成します。相談や来季の計画にそのまま使えます。</p>
-      </div>
-      <div class="feat rise">
-        <div class="feat-ic">🕐</div>
-        <h3>履歴のふりかえり</h3>
-        <p>同じ区画・同じ作物の記録を時系列で並べて比較。年をまたぐほど価値が出ます。</p>
       </div>
       <div class="feat rise">
         <div class="feat-ic">💬</div>
@@ -760,7 +765,7 @@ footer a:hover{color:var(--paper);}
   <div class="wrap">
     <span class="eyebrow rise">料金</span>
     <h2 class="h2 rise">プランター1つでも、<br>畑1反でも。</h2>
-    <p class="lede rise">記録をつけるだけなら、<br>ずっと無料で使えます。</p>
+    <p class="lede rise">記録だけなら、ずっと無料。</p>
 
     <div class="plans">
       <div class="plan rise">
@@ -880,10 +885,6 @@ footer a:hover{color:var(--paper);}
       <span class="perk">登録は10秒</span>
       <span class="perk">いつでも解除可</span>
     </div>
-
-    <p class="final-alt">
-      先に触ってみたい方は <a href="https://gloona.vercel.app">Web版（ベータ）</a> をどうぞ。
-    </p>
   </div>
 </section>
 
